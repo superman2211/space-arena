@@ -7,15 +7,22 @@
 	"author": "Sergey Antonov <superflasher22@gmail.com>",
 	"license": "MIT",
 	"scripts": {
-		"build": "tsc",
-		"start": ""
+		"clean": "rimraf ./dist",
+		"watch": "tsc -w & rollup -c rollup.config.dev.js -w",
+		"build": "yarn clean && tsc && rollup -c rollup.config.prod.js",
+		"lint": "eslint --fix"
 	},
 	"devDependencies": {
+		"@rollup/plugin-html": "^0.2.3",
 		"@typescript-eslint/eslint-plugin": "^4.29.3",
 		"@typescript-eslint/parser": "^4.29.3",
 		"eslint": "^7.32.0",
 		"eslint-config-airbnb-base": "^14.2.1",
 		"eslint-plugin-import": "^2.24.1",
+		"rimraf": "^3.0.2",
+		"rollup": "^2.56.3",
+		"rollup-plugin-sourcemaps": "^0.6.3",
+		"rollup-plugin-terser": "^7.0.2",
 		"typescript": "^4.3.5"
 	}
 }
