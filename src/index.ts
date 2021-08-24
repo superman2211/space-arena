@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Point } from './geom/Point';
 
 console.log('test');

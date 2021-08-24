@@ -15,6 +15,13 @@ module.exports = {
 		'@typescript-eslint',
 	],
 	ignorePatterns: ['dist', 'node_modules'],
+	settings: {
+		'import/resolver': {
+			node: {
+				extensions: ['.js', '.jsx', '.ts', '.tsx'],
+			},
+		},
+	},
 	rules: {
 		'no-useless-constructor': 'off',
 		'no-tabs': 'off',
