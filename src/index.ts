@@ -1,11 +1,17 @@
-/* eslint-disable no-console */
-import { Point } from './geom/Point';
+import { updateCanvas } from './graphics/canvas';
 
-console.log('test');
+function init() {
+
+}
+
+function update() {
+	requestAnimationFrame(update);
+	updateCanvas();
+}
 
 function main() {
-	const point: Point = { x: 3, y: 4 };
-	console.log(Point.length(point));
+	init();
+	update();
 }
 
 main();
