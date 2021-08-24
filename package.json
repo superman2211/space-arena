@@ -1,0 +1,16 @@
+{
+  "name": "space-arena",
+  "version": "0.1.0",
+  "description": "Space Arena game",
+  "private": true,
+  "repository": "https://github.com/AntonovSergey2211/space-arena.git",
+  "author": "Sergey Antonov <superflasher22@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "start": ""
+  },
+  "devDependencies": {
+    "typescript": "^4.3.5"
+  }
+}
