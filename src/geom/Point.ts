@@ -4,9 +4,7 @@ export interface Point {
 }
 
 export namespace Point {
-	export function empty(): Point {
-		return { x: 0, y: 0 };
-	}
+	export const empty = (): Point => ({ x: 0, y: 0 });
 
 	export function length(point: Point): number {
 		const { x, y } = point;

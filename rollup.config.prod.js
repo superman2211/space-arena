@@ -1,4 +1,5 @@
 import { terser } from 'rollup-plugin-terser';
+import filesize from 'rollup-plugin-filesize';
 import base from './rollup.config';
 
 export default {
@@ -6,5 +7,6 @@ export default {
 	plugins: [
 		...base.plugins,
 		terser(),
+		filesize(),
 	],
 };
