@@ -10,7 +10,8 @@
 		"clean": "rimraf ./dist",
 		"watch": "tsc -w & rollup -c rollup.config.dev.js -w",
 		"build": "yarn clean && tsc && rollup -c rollup.config.prod.js",
-		"lint": "eslint --fix"
+		"lint": "eslint --fix",
+		"compress": "yarn google-closure-compiler --compilation_level=ADVANCED --js=dist/build/bundle.js --js_output_file=dist/build/bundle.min.js"
 	},
 	"devDependencies": {
 		"@rollup/plugin-html": "^0.2.3",
@@ -19,6 +20,7 @@
 		"eslint": "^7.32.0",
 		"eslint-config-airbnb-base": "^14.2.1",
 		"eslint-plugin-import": "^2.24.1",
+		"google-closure-compiler": "^20210808.0.0",
 		"rimraf": "^3.0.2",
 		"rollup": "^2.56.3",
 		"rollup-plugin-filesize": "^9.1.1",

@@ -3,33 +3,33 @@ import { Point } from './Point';
 export interface Rectangle {
 	x: number;
 	y: number;
-	width: number;
-	height: number;
+	w: number;
+	h: number;
 }
 
 export namespace Rectangle {
 	export function empty(): Rectangle {
 		return {
-			x: 0, y: 0, width: 0, height: 0,
+			x: 0, y: 0, w: 0, h: 0,
 		};
 	}
 
 	export function setEmpty(rectangle: Rectangle) {
 		rectangle.x = 0;
 		rectangle.y = 0;
-		rectangle.width = 0;
-		rectangle.height = 0;
+		rectangle.w = 0;
+		rectangle.h = 0;
 	}
 
 	export function intersection(source: Rectangle, target: Rectangle, result: Rectangle) {
 		let {
-			x, y, width, height,
+			x, y, w: width, h: height,
 		} = source;
 
 		const left = target.x;
 		const top = target.y;
-		const right = target.x + target.width;
-		const bottom = target.y + target.height;
+		const right = target.x + target.w;
+		const bottom = target.y + target.h;
 
 		if (x < left) {
 			width -= left - x;
@@ -57,25 +57,25 @@ export namespace Rectangle {
 
 		result.x = x;
 		result.y = y;
-		result.width = width;
-		result.height = height;
+		result.w = width;
+		result.h = height;
 	}
 
 	export function isEmpty(rectangle: Rectangle): boolean {
-		return rectangle.width === 0 || rectangle.height === 0;
+		return rectangle.w === 0 || rectangle.h === 0;
 	}
 
 	export function contains(rectangle: Rectangle, point: Point): boolean {
 		return rectangle.x < point.x
-			&& rectangle.x + rectangle.width > point.x
+			&& rectangle.x + rectangle.w > point.x
 			&& rectangle.y < point.y
-			&& rectangle.y + rectangle.height > point.y;
+			&& rectangle.y + rectangle.h > point.y;
 	}
 
 	export function round(rectangle: Rectangle) {
 		rectangle.x = Math.round(rectangle.x);
 		rectangle.y = Math.round(rectangle.y);
-		rectangle.width = Math.round(rectangle.width);
-		rectangle.height = Math.round(rectangle.height);
+		rectangle.w = Math.round(rectangle.w);
+		rectangle.h = Math.round(rectangle.h);
 	}
 }

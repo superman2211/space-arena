@@ -126,8 +126,8 @@ export namespace Matrix {
 
 		const rx = bounds.x;
 		const ry = bounds.y;
-		const rr = rx + bounds.width;
-		const rb = ry + bounds.height;
+		const rr = rx + bounds.w;
+		const rb = ry + bounds.h;
 
 		const nx1 = rx * a + ry * c + tx;
 		const ny1 = rx * b + ry * d + ty;
@@ -184,7 +184,7 @@ export namespace Matrix {
 
 		result.x = left;
 		result.y = top;
-		result.width = right - left;
-		result.height = bottom - top;
+		result.w = right - left;
+		result.h = bottom - top;
 	}
 }
