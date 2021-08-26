@@ -35,6 +35,7 @@ module.exports = {
 		'no-unused-vars': 'off',
 		'no-redeclare': 'off',
 		'no-restricted-syntax': 'off',
+		'no-restricted-globals': 'off',
 		'@typescript-eslint/no-redeclare': ['error', { ignoreDeclarationMerge: true }],
 		'@typescript-eslint/no-unused-vars': ['error'],
 		'no-mixed-operators': 'off',

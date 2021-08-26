@@ -8,8 +8,9 @@
 	"license": "MIT",
 	"scripts": {
 		"clean": "rimraf ./dist",
-		"watch": "tsc -w & rollup -c rollup.config.dev.js -w",
+		"watch": "tsc -w & rollup -c rollup.config.dev.js -w & yarn serve",
 		"build": "yarn clean && tsc && rollup -c rollup.config.prod.js",
+		"serve": "http-server ./dist/build",
 		"lint": "eslint --fix",
 		"compress": "yarn google-closure-compiler --compilation_level=ADVANCED --js=dist/build/bundle.js --js_output_file=dist/build/bundle.min.js"
 	},
@@ -21,6 +22,7 @@
 		"eslint-config-airbnb-base": "^14.2.1",
 		"eslint-plugin-import": "^2.24.1",
 		"google-closure-compiler": "^20210808.0.0",
+		"http-server": "^13.0.1",
 		"rimraf": "^3.0.2",
 		"rollup": "^2.56.3",
 		"rollup-plugin-filesize": "^9.1.1",
