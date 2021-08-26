@@ -19,33 +19,19 @@ export namespace Matrix {
 		};
 	}
 
-	export function translation(
-		matrix: Matrix,
-		x: number = 0,
-		y: number = 0,
-	) {
-		matrix.x = x;
-		matrix.y = y;
-	}
+	export function concat(matrix0: Matrix, matrix1: Matrix, result: Matrix) {
+		const a = matrix1.a * matrix0.a + matrix1.b * matrix0.c;
+		const b = matrix1.a * matrix0.b + matrix1.b * matrix0.d;
+		const c = matrix1.c * matrix0.a + matrix1.d * matrix0.c;
+		const d = matrix1.c * matrix0.b + matrix1.d * matrix0.d;
+		const x = matrix1.x * matrix0.a + matrix1.y * matrix0.c + matrix0.x;
+		const y = matrix1.x * matrix0.b + matrix1.y * matrix0.d + matrix0.y;
 
-	export function box(
-		matrix: Matrix,
-		x: number = 0,
-		y: number = 0,
-		scaleX: number = 1,
-		scaleY: number = 1,
-		rotation: number = 0,
-	) {
-		const c = Math.cos(rotation);
-		const s = Math.sin(rotation);
-
-		matrix.a = scaleX * c;
-		matrix.b = scaleX * s;
-
-		matrix.c = scaleY * s;
-		matrix.d = scaleY * c;
-
-		matrix.x = x;
-		matrix.y = y;
+		result.a = a;
+		result.b = b;
+		result.c = c;
+		result.d = d;
+		result.x = x;
+		result.y = y;
 	}
 }
