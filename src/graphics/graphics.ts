@@ -8,16 +8,21 @@ const colorTransform = ColorTransform.empty();
 const canvas: HTMLCanvasElement = document.getElementById('c') as HTMLCanvasElement;
 const context: CanvasRenderingContext2D = canvas.getContext('2d')!;
 
+const dpr = devicePixelRatio;
+
 function updateSize() {
-	const d = devicePixelRatio;
+	const w = (innerWidth * dpr) | 0;
+	const h = (innerHeight * dpr) | 0;
 
-	const w = (innerWidth * d) | 0;
-	const h = (innerHeight * d) | 0;
+	if (w !== canvas.width) {
+		canvas.width = w;
+	}
 
-	canvas.width = w;
-	canvas.height = h;
+	if (h !== canvas.height) {
+		canvas.height = h;
+	}
 
-	matrix.a = matrix.d = d;
+	matrix.a = matrix.d = dpr;
 }
 
 function clean() {
