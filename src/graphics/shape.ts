@@ -9,7 +9,8 @@ export const FILL = 2;
 export const STROKE = 3;
 
 export function parseShape(data: string): Shape {
-	return data.split(' ').map((item) => parseFloat(item));
+	// eslint-disable-next-line radix
+	return data.split(' ').map((value) => parseInt(value));
 }
 
 export function renderShape(shape: Shape, ct: ColorTransform, context: CanvasRenderingContext2D) {

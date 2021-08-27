@@ -1,6 +1,6 @@
 import { Component } from '../graphics/component';
 import {
-	FILL, LINE, MOVE, STROKE,
+	FILL, LINE, MOVE, parseShape, STROKE,
 } from '../graphics/shape';
 
 export function application(): Component {
@@ -11,9 +11,15 @@ export function application(): Component {
 				y: 0,
 				r: 0,
 				shape: [
-					MOVE, 10, 10, LINE, 100, 10, LINE, 50, 100, FILL, 0xffff0000, STROKE, 0xff00ff00, 10,
-					MOVE, 100, 100, LINE, 200, 100, LINE, 200, 200, LINE, 100, 200, LINE, 100, 100, STROKE, 0xff0000ff, 2,
+					MOVE, 10, 10,
+					LINE, 100, 10,
+					LINE, 50, 100,
+					FILL, 0xffff0000,
+					STROKE, 0xff00ff00, 10,
 				],
+			},
+			{
+				shape: parseShape('0 100 100 1 200 100 1 200 200 1 100 200 1 100 100 3 0xff0000ff 2'),
 			},
 		],
 		onUpdate(time: number) {
