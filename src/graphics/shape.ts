@@ -1,38 +1,42 @@
 import { ColorTransform } from '../geom/color';
 import { Pattern } from './pattern';
 
-export type Shape = Array<string | number>;
+export type Shape = Array<number>;
+
+export const MOVE = 0;
+export const LINE = 1;
+export const FILL = 2;
+export const STROKE = 3;
+
+export function parseShape(data: string): Shape {
+	return data.split(' ').map((item) => parseFloat(item));
+}
 
 export function renderShape(shape: Shape, ct: ColorTransform, context: CanvasRenderingContext2D) {
 	for (let i = 0; i < shape.length; i++) {
 		switch (shape[i]) {
-			case 'f':
-				context.fillStyle = Pattern.color(shape[++i] as number, ct);
+			case FILL:
+				context.fillStyle = Pattern.color(shape[++i], ct);
 				context.fill();
 				break;
 
-			case 's':
-				context.strokeStyle = Pattern.color(shape[++i] as number, ct);
-				context.lineWidth = shape[++i] as number;
+			case STROKE:
+				context.strokeStyle = Pattern.color(shape[++i], ct);
+				context.lineWidth = shape[++i];
 				context.stroke();
 				break;
 
-			case 'm':
+			case MOVE:
 				context.beginPath();
-				context.moveTo(shape[++i] as number, shape[++i] as number);
+				context.moveTo(shape[++i], shape[++i]);
 				break;
 
-			case 'l':
-				context.lineTo(shape[++i] as number, shape[++i] as number);
+			case LINE:
+				context.lineTo(shape[++i], shape[++i]);
 				break;
 
 			default:
 				throw `unknown command: ${shape[i]}`;
 		}
 	}
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function renderMesh(shape: Shape, ct: ColorTransform, context: CanvasRenderingContext2D) {
-	throw 'not implemented';
 }

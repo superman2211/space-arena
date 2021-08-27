@@ -1,15 +1,14 @@
 import { ColorTransform } from '../geom/color';
 import { Matrix } from '../geom/matrix';
-import { renderMesh, renderShape, Shape } from './shape';
+import { renderShape, Shape } from './shape';
 import { renderText, Text } from './text';
 import { Transform } from './transform';
 import { Update } from './update';
 
 export interface Component extends Transform, Update {
 	shape?: Shape;
-	mesh?: Shape;
 	text?: Text;
-	childs?: Component[];
+	children?: Component[];
 }
 
 export namespace Component {
@@ -29,24 +28,18 @@ export namespace Component {
 
 		context.setTransform(matrix.a, matrix.b, matrix.c, matrix.d, matrix.x, matrix.y);
 
-		const {
-			shape, mesh, text, childs,
-		} = component;
+		const { shape, text, children } = component;
 
 		if (shape) {
 			renderShape(shape, colorTransform, context);
-		}
-
-		if (mesh) {
-			renderMesh(mesh, colorTransform, context);
 		}
 
 		if (text) {
 			renderText(text, colorTransform, context);
 		}
 
-		if (childs) {
-			childs.forEach((child) => render(child, matrix, colorTransform, context));
+		if (children) {
+			children.forEach((child) => render(child, matrix, colorTransform, context));
 		}
 	}
 
@@ -55,12 +48,12 @@ export namespace Component {
 			component.onUpdate(time);
 		}
 
-		const { childs } = component;
+		const { children } = component;
 
-		if (!childs) {
+		if (!children) {
 			return;
 		}
 
-		childs.forEach((child) => update(child, time));
+		children.forEach((child) => update(child, time));
 	}
 }
