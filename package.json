@@ -8,7 +8,7 @@
 	"license": "MIT",
 	"scripts": {
 		"clean": "rimraf ./dist",
-		"watch": "tsc -w & rollup -c rollup.config.dev.js -w & yarn serve",
+		"watch": "tsc -w & rollup -c rollup.config.dev.js -w",
 		"build": "yarn clean && tsc && rollup -c rollup.config.prod.js",
 		"serve": "http-server ./dist/build",
 		"lint": "eslint --fix",

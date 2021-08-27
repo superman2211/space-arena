@@ -3,10 +3,11 @@ import { Pattern } from './pattern';
 
 export type Shape = Array<number>;
 
-export const MOVE = 0;
-export const LINE = 1;
-export const FILL = 2;
-export const STROKE = 3;
+export const FILL = 0;
+export const STROKE = 1;
+export const MOVE = 2;
+export const LINE = 3;
+export const PATH = 4;
 
 export function parseShape(data: string): Shape {
 	// eslint-disable-next-line radix
@@ -34,6 +35,16 @@ export function renderShape(shape: Shape, ct: ColorTransform, context: CanvasRen
 
 			case LINE:
 				context.lineTo(shape[++i], shape[++i]);
+				break;
+
+			case PATH:
+				let count = shape[++i];
+				count--;
+				context.beginPath();
+				context.moveTo(shape[++i], shape[++i]);
+				while (count--) {
+					context.lineTo(shape[++i], shape[++i]);
+				}
 				break;
 
 			default:
