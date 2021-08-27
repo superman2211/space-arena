@@ -16,8 +16,8 @@ export namespace Component {
 		const matrix = Matrix.empty();
 		const colorTransform = ColorTransform.empty();
 
-		Transform.calculateMatrix(component, matrix);
-		Transform.calculateColor(component, colorTransform);
+		Transform.getMatrix(component, matrix);
+		Transform.getColorTransform(component, colorTransform);
 
 		Matrix.concat(parentMatrix, matrix, matrix);
 		ColorTransform.concat(parentColorTranform, colorTransform, colorTransform);

@@ -2,35 +2,35 @@ import { ColorTransform } from '../geom/color';
 import { Matrix } from '../geom/matrix';
 
 export interface TintColor {
-	c?: number;
-	v?: number;
+	color?: number;
+	value?: number;
 }
 
 export interface Transform {
 	x?: number;
 	y?: number;
-	r?: number;
-	s?: number;
-	sx?: number;
-	sy?: number;
-	a?: number;
+	rotation?: number;
+	scale?: number;
+	scaleX?: number;
+	scaleY?: number;
+	alpha?: number;
 	tint?: TintColor;
 	brightness?: number;
 }
 
 export namespace Transform {
-	export function calculateMatrix(transform: Transform, result: Matrix) {
-		const { r } = transform;
+	export function getMatrix(transform: Transform, result: Matrix) {
+		const { rotation } = transform;
 
-		const sx = transform.sx ?? transform.s ?? 1;
-		const sy = transform.sy ?? transform.s ?? 1;
+		const sx = transform.scaleX ?? transform.scale ?? 1;
+		const sy = transform.scaleY ?? transform.scale ?? 1;
 
 		result.x = transform.x ?? 0;
 		result.y = transform.y ?? 0;
 
-		if (r) {
-			const cos = Math.cos(r);
-			const sin = Math.sin(r);
+		if (rotation) {
+			const cos = Math.cos(rotation);
+			const sin = Math.sin(rotation);
 
 			result.a = cos * sx;
 			result.b = sin * sx;
@@ -45,18 +45,18 @@ export namespace Transform {
 		result.d = sy;
 	}
 
-	export function calculateColor(transform: Transform, result: ColorTransform) {
-		const alpha = transform.a ?? 1;
+	export function getColorTransform(transform: Transform, result: ColorTransform) {
+		const alpha = transform.alpha ?? 1;
 
 		const { tint } = transform;
 		if (tint) {
-			const { c = 0, v = 1 } = tint;
+			const { color = 0, value = 1 } = tint;
 
-			const valueInverted = 1 - v;
+			const valueInverted = 1 - value;
 
-			const r = (c >> 16) & 0xff;
-			const g = (c >> 8) & 0xff;
-			const b = c & 0xff;
+			const r = (color >> 16) & 0xff;
+			const g = (color >> 8) & 0xff;
+			const b = color & 0xff;
 
 			result.am = alpha;
 			result.rm = valueInverted;
@@ -64,9 +64,9 @@ export namespace Transform {
 			result.bm = valueInverted;
 
 			result.ao = 0;
-			result.ro = r * v;
-			result.go = g * v;
-			result.bo = b * v;
+			result.ro = r * value;
+			result.go = g * value;
+			result.bo = b * value;
 			return;
 		}
 

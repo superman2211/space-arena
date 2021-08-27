@@ -9,7 +9,7 @@ export function application(): Component {
 			{
 				x: 0,
 				y: 0,
-				r: 0,
+				rotation: 0,
 				shape: [
 					MOVE, 10, 10,
 					LINE, 100, 10,
@@ -69,7 +69,7 @@ export function application(): Component {
 			const first = this.children![0];
 			first.x! += time * 10;
 			first.y! += time * 10;
-			first.r! += time;
+			first.rotation! += time;
 		},
 	};
 }
