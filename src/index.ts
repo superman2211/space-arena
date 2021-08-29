@@ -2,7 +2,9 @@ import { application } from './game/application';
 import { Component } from './graphics/component';
 import { Graphics } from './graphics/graphics';
 
-const app = application();
+const app = application({ width: innerWidth, height: innerHeight });
+
+console.log(app);
 
 let oldTime = performance.now();
 

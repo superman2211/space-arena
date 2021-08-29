@@ -1,75 +1,32 @@
 import { Component } from '../graphics/component';
-import {
-	FILL, LINE, MOVE, PATH, STROKE,
-} from '../graphics/shape';
+import { ship } from './ship';
 
-export function application(): Component {
+interface ApplicationOptions {
+	width: number,
+	height: number,
+}
+
+export function application(options: ApplicationOptions): Component {
 	return {
 		children: [
-			{
-				x: 0,
-				y: 0,
-				rotation: 0,
-				shape: [
-					MOVE, 10, 10,
-					LINE, 100, 10,
-					LINE, 50, 100,
-					FILL, 0xffff0000,
-					STROKE, 0xff00ff00, 10,
-
-					MOVE, 100, 100,
-					LINE, 200, 210,
-					LINE, 250, 150,
-					LINE, 100, 100,
-					FILL, 0xff00ff00,
-					STROKE, 0xffff0000, 2,
-				],
-			},
-			{
-				shape: [
-					MOVE, 100, 100,
-					LINE, 200, 100,
-					LINE, 200, 200,
-					LINE, 100, 200,
-					LINE, 100, 100,
-					STROKE, 0xff0000ff, 2,
-				],
-			},
-			{
-				x: 200,
-				shape: [
-					MOVE, 100, 100,
-					LINE, 200, 100,
-					LINE, 200, 200,
-					LINE, 100, 200,
-					LINE, 100, 100,
-					STROKE, 0xff00ff00, 3,
-					FILL, 0xff990099,
-				],
-			},
-			{
-				x: 200,
-				y: 200,
-				shape: [
-					PATH, 5, 100, 100, 200, 100, 200, 200, 100, 200, 100, 100,
-					STROKE, 0xffff0000, 3,
-				],
-			},
-			{
-				x: 0,
-				y: 200,
-				shape: [
-					PATH, 5, 100, 100, 200, 100, 200, 200, 100, 200, 100, 100,
-					STROKE, 0xff00ff00, 10,
-					FILL, 0xffffff00,
-				],
-			},
+			ship({ colors: [0xff26333E, 0xffB3B3AF, 0xff36465A, 0xffF9AC35] }),
+			ship({ colors: [0xffB3B3AF, 0xff26333E, 0xff36995A, 0xffffff00] }),
+			ship({ colors: [0xff369900, 0xffB3B3AF, 0xff26333E, 0xffff0000] }),
 		],
 		onUpdate(time: number) {
-			const first = this.children![0];
-			first.x! += time * 10;
-			first.y! += time * 10;
-			first.rotation! += time;
+			const [ship0, ship1, ship2] = this.children!;
+
+			ship0.x = options.width / 2;
+			ship0.y = options.height / 2;
+
+			ship1.x = options.width / 2 + 255;
+			ship1.y = options.height / 2;
+
+			ship2.x = options.width / 2 - 255;
+			ship2.y = options.height / 2;
+
+			// ship0.rotation ? 0 : (ship0.rotation = 0);
+			// ship0.rotation! += time;
 		},
 	};
 }
