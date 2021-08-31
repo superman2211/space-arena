@@ -25,8 +25,6 @@ export function ship(options: ShipOptions): Component {
 		PATH, 5, 171, 15, 182, 26, 203, 111, 220, 122, 220, 136, STROKE, color3, 4,
 	];
 
-	console.log(shape.length);
-
 	return {
 		scale: 1,
 		children: [

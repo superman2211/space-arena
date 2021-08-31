@@ -2,7 +2,7 @@ import { application } from './game/application';
 import { Component } from './graphics/component';
 import { Graphics } from './graphics/graphics';
 
-const app = application({ width: innerWidth, height: innerHeight });
+const app = application({ getWidth: () => innerWidth, getHeight: () => innerHeight });
 
 console.log(app);
 

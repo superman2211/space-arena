@@ -2,8 +2,8 @@ import { Component } from '../graphics/component';
 import { ship } from './ship';
 
 interface ApplicationOptions {
-	width: number,
-	height: number,
+	getWidth(): number,
+	getHeight(): number,
 }
 
 export function application(options: ApplicationOptions): Component {
@@ -16,17 +16,22 @@ export function application(options: ApplicationOptions): Component {
 		onUpdate(time: number) {
 			const [ship0, ship1, ship2] = this.children!;
 
-			ship0.x = options.width / 2;
-			ship0.y = options.height / 2;
+			const width = options.getWidth();
+			const height = options.getHeight();
 
-			ship1.x = options.width / 2 + 255;
-			ship1.y = options.height / 2;
+			ship0.x = width / 2;
+			ship0.y = height / 2;
 
-			ship2.x = options.width / 2 - 255;
-			ship2.y = options.height / 2;
+			ship1.x = width / 2 + 255;
+			ship1.y = height / 2;
 
-			// ship0.rotation ? 0 : (ship0.rotation = 0);
-			// ship0.rotation! += time;
+			ship2.x = width / 2 - 255;
+			ship2.y = height / 2;
+
+			if (ship0.rotation === undefined) {
+				ship0.rotation = 0;
+			}
+			ship0.rotation! += time;
 		},
 	};
 }
