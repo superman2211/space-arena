@@ -13,7 +13,12 @@
 		"build": "yarn clean && tsc && rollup -c rollup.config.prod.js",
 		"serve": "http-server ./dist/build",
 		"lint": "eslint --fix",
-		"compress": "yarn google-closure-compiler --compilation_level=ADVANCED --js=dist/build/bundle.js --js_output_file=dist/build/bundle.min.js"
+		"compress": "yarn google-closure-compiler --compilation_level=ADVANCED --js=dist/build/bundle.js --js_output_file=dist/build/bundle.min.js",
+		"generate-shapes": "node ./scripts/generate-shapes.js"
+	},
+	"dependencies": {
+		"svg-path": "^0.2.1",
+		"xml2js": "^0.4.23"
 	},
 	"devDependencies": {
 		"@rollup/plugin-html": "^0.2.3",
