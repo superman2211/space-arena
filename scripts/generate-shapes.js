@@ -8,32 +8,37 @@ const GROUP_TAGS = ['svg', 'defs', 'g'];
 
 const FILL = 0;
 const STROKE = 1;
-const MOVE = 2;
-const LINE = 3;
 const PATH = 4;
 
-function readSVG() {
+function readSVG(options) {
 	console.log('Read SVG');
-	const shapesPath = path.resolve(__dirname, '../resources');
+
+	const { source } = options;
+	const shapesPath = path.resolve(source);
 	const files = fs.readdirSync(shapesPath);
 	const svgFiles = files.filter((file) => path.extname(file) === '.svg');
 	const svgDatas = svgFiles.map((file) => fs.readFileSync(path.resolve(shapesPath, file)).toString());
 	const shapes = svgDatas.map((data, index) => ({ data, file: svgFiles[index] }));
+
 	console.log('Read SVG completed');
+
 	return shapes;
 }
 
 async function parseSVG(shapes) {
 	console.log('Parse SVG');
+
 	const promises = shapes.map((shape) => {
 		const parser = new xml2js.Parser();
 		return parser.parseStringPromise(shape.data);
 	});
+
 	const svgShapes = await Promise.all(promises);
 	shapes.forEach((shape, index) => {
 		delete shape.data;
 		shape.svg = svgShapes[index];
 	});
+
 	console.log('Parse SVG completed');
 }
 
@@ -64,7 +69,9 @@ function getPelleteIndex(pallete, color) {
 	return fillIndex;
 }
 
-function convertToBinary(shapes) {
+function parseCommands(shapes) {
+	console.log('Parse commands');
+
 	shapes.forEach((shape) => {
 		const svgPaths = [];
 		findTags(shape.svg, 'path', svgPaths);
@@ -108,16 +115,41 @@ function convertToBinary(shapes) {
 		});
 		shape.commands = commands;
 	});
+
+	console.log('Parse commands completed');
 }
 
-function writeBinary() { }
+function writeBinary(shapes, options) {
+	console.log('Write binary');
+
+	const { target } = options;
+	const targetDirectory = path.resolve(target);
+	if (!fs.existsSync(targetDirectory)) {
+		fs.mkdirSync(targetDirectory, { recursive: true });
+	}
+
+	shapes.forEach((shape) => {
+		const binaryFile = path.resolve(targetDirectory, shape.file.replace('.svg', ''));
+		fs.writeFileSync(binaryFile, Buffer.from(shape.commands));
+	});
+
+	console.log('Write binary completed');
+}
+
+function readOptions() {
+	return {
+		source: process.argv[2],
+		target: process.argv[3],
+	};
+}
 
 async function main() {
-	const shapes = readSVG();
+	const options = readOptions();
+	const shapes = readSVG(options);
 	await parseSVG(shapes);
-	convertToBinary(shapes);
-	writeBinary(shapes);
-	console.log(shapes);
+	parseCommands(shapes);
+	writeBinary(shapes, options);
+	// console.log(shapes);
 }
 
 main();
