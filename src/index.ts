@@ -1,10 +1,9 @@
 import { application } from './game/application';
 import { Component } from './graphics/component';
 import { Graphics } from './graphics/graphics';
+import { loadShapes } from './resources/shapes';
 
-const app = application({ getWidth: () => innerWidth, getHeight: () => innerHeight });
-
-console.log(app);
+let app: Component;
 
 let oldTime = performance.now();
 
@@ -21,8 +20,20 @@ function update() {
 	Graphics.render(app);
 }
 
-function main() {
+function start() {
+	app = application({ getWidth: () => innerWidth, getHeight: () => innerHeight });
+	console.log(app);
+	oldTime = performance.now();
 	update();
+}
+
+async function preload() {
+	await loadShapes();
+}
+
+async function main() {
+	await preload();
+	start();
 }
 
 main();

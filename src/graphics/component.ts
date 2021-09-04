@@ -7,6 +7,7 @@ import { Update } from './update';
 
 export interface Component extends Transform, Update {
 	shape?: Shape;
+	pallete?: number[];
 	text?: Text;
 	children?: Component[];
 }
@@ -28,10 +29,12 @@ export namespace Component {
 
 		context.setTransform(matrix.a, matrix.b, matrix.c, matrix.d, matrix.x, matrix.y);
 
-		const { shape, text, children } = component;
+		const {
+			shape, pallete, text, children,
+		} = component;
 
-		if (shape) {
-			renderShape(shape, colorTransform, context);
+		if (shape && pallete) {
+			renderShape(shape, pallete, colorTransform, context);
 		}
 
 		if (text) {

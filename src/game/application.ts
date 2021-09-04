@@ -7,31 +7,45 @@ interface ApplicationOptions {
 }
 
 export function application(options: ApplicationOptions): Component {
+	const pallete = [0xff26333E, 0xffB3B3AF, 0xff36465A, 0xffbbbbbb, 0xffF9AC35];
 	return {
 		children: [
-			ship({ colors: [0xff26333E, 0xffB3B3AF, 0xff36465A, 0xffF9AC35] }),
-			ship({ colors: [0xffB3B3AF, 0xff26333E, 0xff36995A, 0xffffff00] }),
-			ship({ colors: [0xff369900, 0xffB3B3AF, 0xff26333E, 0xffff0000] }),
+			ship({ name: 'ship01', pallete }),
+			ship({ name: 'ship02', pallete }),
+			ship({ name: 'ship03', pallete }),
+			ship({ name: 'ship04', pallete }),
+			ship({ name: 'ship05', pallete }),
 		],
 		onUpdate(time: number) {
-			const [ship0, ship1, ship2] = this.children!;
+			const ships = this.children!;
+			ships.forEach((s) => {
+				s.scale = 0.5;
+			});
+
+			const [ship01, ship02, ship03, ship04, ship05] = ships;
 
 			const width = options.getWidth();
 			const height = options.getHeight();
 
-			ship0.x = width / 2;
-			ship0.y = height / 2;
+			ship01.x = width / 2;
+			ship01.y = height / 2;
 
-			ship1.x = width / 2 + 255;
-			ship1.y = height / 2;
+			ship02.x = width / 2 + 255;
+			ship02.y = height / 2;
 
-			ship2.x = width / 2 - 255;
-			ship2.y = height / 2;
+			ship03.x = width / 2 - 255;
+			ship03.y = height / 2;
 
-			if (ship0.rotation === undefined) {
-				ship0.rotation = 0;
+			ship04.x = width / 2;
+			ship04.y = height / 2 - 255;
+
+			ship05.x = width / 2;
+			ship05.y = height / 2 + 255;
+
+			if (ship01.rotation === undefined) {
+				ship01.rotation = 0;
 			}
-			ship0.rotation! += time;
+			ship01.rotation! += time;
 		},
 	};
 }
