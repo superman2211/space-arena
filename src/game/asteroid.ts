@@ -5,7 +5,7 @@ function random(min: number, max: number): number {
 	return Math.round(min + Math.random() * (max - min));
 }
 
-function generate(array: number[], color: number, countMin: number, countMax: number, radiusMin: number, radiusMax: number): Shape {
+function generate(array: number[], color: number, x: number, y: number, countMin: number, countMax: number, radiusMin: number, radiusMax: number): Shape {
 	let count = random(countMin, countMax);
 
 	array.push(PATH, count);
@@ -15,8 +15,8 @@ function generate(array: number[], color: number, countMin: number, countMax: nu
 
 	while (count--) {
 		array.push(
-			127 + Math.cos(angle) * random(radiusMin, radiusMax),
-			127 + Math.sin(angle) * random(radiusMin, radiusMax),
+			x + Math.cos(angle) * random(radiusMin, radiusMax),
+			y + Math.sin(angle) * random(radiusMin, radiusMax),
 		);
 		angle += angleStep;
 	}
@@ -33,9 +33,19 @@ interface AsteroidOptions {
 export function asteroid(options: AsteroidOptions): Component {
 	const { pallete } = options;
 	const array: number[] = [];
-	generate(array, 0, 7, 15, 80, 120);
-	generate(array, 1, 5, 10, 50, 90);
+	let count = random(3, 6);
+
+	while (count--) {
+		generate(
+			array, random(0, pallete.length - 1),
+			random(127 - 50, 127 + 50), random(127 - 50, 127 + 50),
+			7, 15,
+			40, 70,
+		);
+	}
+
 	const shape: Shape = new Uint8Array(array);
+
 	return {
 		children: [
 			{

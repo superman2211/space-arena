@@ -8,8 +8,8 @@ interface ApplicationOptions {
 }
 
 export function application(options: ApplicationOptions): Component {
-	const pallete = [0xff26333E, 0xffB3B3AF, 0xff36465A, 0xffbbbbbb, 0xffF9AC35];
-	const asteroidsPallete = [0xff666666, 0xff999999];
+	const pallete = [0xff26333E, 0xff666666, 0xffB3B3AF, 0xffF9AC35, 0xffff0000];
+	const asteroidsPallete = [0xff555555, 0xff666666];
 	return {
 		children: [
 			ship({ name: 'ship01', pallete }),
@@ -21,8 +21,11 @@ export function application(options: ApplicationOptions): Component {
 			asteroid({ pallete: asteroidsPallete }),
 			asteroid({ pallete: asteroidsPallete }),
 			asteroid({ pallete: asteroidsPallete }),
+			asteroid({ pallete: [0xff996666, 0xff997777] }),
+			asteroid({ pallete: [0xff669966, 0xff779977] }),
+			asteroid({ pallete: [0xff666699, 0xff777799] }),
 		],
-		onUpdate() {
+		onUpdate(time: number) {
 			const ships = this.children!;
 
 			let x = 127;
@@ -33,11 +36,16 @@ export function application(options: ApplicationOptions): Component {
 				s.x = x;
 				s.y = y;
 
-				x += 127;
-				if (x > 400) {
+				x += 150;
+				if (x > 500) {
 					x = 127;
-					y += 127;
+					y += 150;
 				}
+
+				if (!s.rotation) {
+					s.rotation = 0;
+				}
+				s.rotation += time;
 			});
 		},
 	};
