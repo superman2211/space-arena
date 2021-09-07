@@ -36,10 +36,11 @@ export function game(): Game {
 		width: SIZE,
 		height: SIZE,
 		onUpdate() {
+			const { x, y } = this.camera;
 			const layers = this.children! as Layer[];
 			layers.forEach((layer) => {
-				layer.x = -this.camera.x - this.camera.x * layer.parallax;
-				layer.y = -this.camera.y - this.camera.y * layer.parallax;
+				layer.x = -x - x * layer.parallax;
+				layer.y = -y - y * layer.parallax;
 			});
 		},
 	};

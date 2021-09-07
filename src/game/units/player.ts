@@ -12,7 +12,6 @@ export function player(options: PlayerOptions): Ship {
 
 	const component: Ship = {
 		...base,
-		speed: 200,
 		onUpdate(time: number) {
 			base.onUpdate!.call(this, time);
 			options.camera.x = this.x!;
@@ -23,10 +22,10 @@ export function player(options: PlayerOptions): Ship {
 	document.addEventListener('keydown', (e) => {
 		switch (e.code) {
 			case 'ArrowLeft':
-				component.rotationSpeed = -2;
+				component.rotationTarget = -1;
 				break;
 			case 'ArrowRight':
-				component.rotationSpeed = 2;
+				component.rotationTarget = 1;
 				break;
 			default:
 				break;
@@ -37,11 +36,13 @@ export function player(options: PlayerOptions): Ship {
 	document.addEventListener('keyup', (e) => {
 		switch (e.code) {
 			case 'ArrowLeft':
-				component.rotationSpeed = 0;
+				component.rotationTarget = 0;
 				break;
+
 			case 'ArrowRight':
-				component.rotationSpeed = 0;
+				component.rotationTarget = 0;
 				break;
+
 			default:
 				break;
 		}
