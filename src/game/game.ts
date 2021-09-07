@@ -4,6 +4,7 @@ import { Layer } from './layers/layer';
 import { asteroids } from './layers/asteroids';
 import { ships } from './layers/ships';
 import { space } from './layers/space';
+import { planets } from './layers/planets';
 
 const SIZE = 4096;
 
@@ -19,6 +20,9 @@ export function game(): Game {
 		children: [
 			space({
 				stars: 10000, parallax: 0.1, size: SIZE,
+			}),
+			planets({
+				parallax: 0.2, size: SIZE,
 			}),
 			asteroids({
 				count: 100, parallax: 0.3, scale: 0.4, size: SIZE, brightness: -0.6,

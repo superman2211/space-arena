@@ -1,4 +1,5 @@
 import { Component } from '../../graphics/component';
+import { Pattern } from '../../graphics/pattern';
 import { mathPI2, randomFloat, randomInt } from '../../utils/math';
 import { Layer } from './layer';
 
@@ -22,7 +23,7 @@ function createStars(count: number, size: number): HTMLCanvasElement {
 		const y = randomFloat(starSize, size - starSize);
 		const radius = randomFloat(starSize / 2, starSize);
 
-		context.fillStyle = `#${randomInt(0x999999, 0xffffff).toString(16)}`;
+		context.fillStyle = Pattern.easyColor(randomInt(0xff999999, 0xffffffff));
 		context.beginPath();
 		context.arc(x, y, radius, 0, mathPI2);
 		context.fill();
