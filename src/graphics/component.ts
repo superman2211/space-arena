@@ -1,5 +1,6 @@
 import { ColorTransform } from '../geom/color';
 import { Matrix } from '../geom/matrix';
+import { renderImage, Image } from './image';
 import { renderShape, Shape } from './shape';
 import { renderText, Text } from './text';
 import { Transform } from './transform';
@@ -10,6 +11,7 @@ export interface Component extends Transform, Update {
 	pallete?: number[];
 	text?: Text;
 	children?: Component[];
+	image?: Image;
 }
 
 export namespace Component {
@@ -30,7 +32,7 @@ export namespace Component {
 		context.setTransform(matrix.a, matrix.b, matrix.c, matrix.d, matrix.x, matrix.y);
 
 		const {
-			shape, pallete, text, children,
+			shape, image, pallete, text, children,
 		} = component;
 
 		if (shape && pallete) {
@@ -39,6 +41,10 @@ export namespace Component {
 
 		if (text) {
 			renderText(text, colorTransform, context);
+		}
+
+		if (image) {
+			renderImage(image, colorTransform, context);
 		}
 
 		if (children) {

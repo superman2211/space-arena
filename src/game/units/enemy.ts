@@ -4,7 +4,7 @@ import { Ship, ship, ShipOptions } from '../objects/ship';
 export function enemy(options: ShipOptions): Ship {
 	const base = ship(options);
 
-	const { width2, height2 } = options;
+	const { size2 } = options;
 
 	return {
 		...base,
@@ -12,7 +12,7 @@ export function enemy(options: ShipOptions): Ship {
 			base.onUpdate!.call(this, time);
 
 			const { x, y } = this;
-			if (x! < -width2 || width2 < x! || y! < -height2 || height2 < y!) {
+			if (x! < -size2 || size2 < x! || y! < -size2 || size2 < y!) {
 				this.rotation = randomFloat(0, math2PI);
 			}
 		},

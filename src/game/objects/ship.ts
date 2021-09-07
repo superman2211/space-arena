@@ -44,8 +44,7 @@ export interface Ship extends Component {
 export interface ShipOptions {
 	pallete: number[],
 	name: string,
-	width2: number,
-	height2: number,
+	size2: number,
 }
 
 export function ship(options: ShipOptions): Ship {

@@ -1,15 +1,15 @@
 import { Point } from '../geom/point';
 import { Component } from '../graphics/component';
-import { Layer } from './layer';
-import { asteroids } from './objects/asteroids';
-import { ships } from './objects/ships';
+import { Layer } from './layers/layer';
+import { asteroids } from './layers/asteroids';
+import { ships } from './layers/ships';
+import { space } from './layers/space';
 
 const SIZE = 4096;
 
 interface Game extends Component {
 	camera: Point;
-	width: number;
-	height: number;
+	size: number;
 }
 
 export function game(): Game {
@@ -17,24 +17,26 @@ export function game(): Game {
 	return {
 		camera,
 		children: [
-			asteroids({
-				count: 70, parallax: 0.3, scale: 0.4, width: SIZE, height: SIZE, brightness: -0.6,
+			space({
+				stars: 10000, parallax: 0.1, size: SIZE,
 			}),
 			asteroids({
-				count: 30, parallax: 0.5, scale: 0.6, width: SIZE, height: SIZE, brightness: -0.4,
+				count: 100, parallax: 0.3, scale: 0.4, size: SIZE, brightness: -0.6,
+			}),
+			asteroids({
+				count: 50, parallax: 0.5, scale: 0.6, size: SIZE, brightness: -0.4,
 			}),
 			ships({
-				count: 20, width: SIZE, height: SIZE, camera,
+				count: 20, size: SIZE, camera,
 			}),
 			asteroids({
-				count: 30, parallax: 1.1, scale: 1, width: SIZE, height: SIZE, brightness: -0.2,
+				count: 25, parallax: 1.1, scale: 1, size: SIZE, brightness: -0.2,
 			}),
 			asteroids({
-				count: 15, parallax: 1.2, scale: 1.2, width: SIZE, height: SIZE, brightness: 0,
+				count: 15, parallax: 1.2, scale: 1.2, size: SIZE, brightness: 0,
 			}),
 		],
-		width: SIZE,
-		height: SIZE,
+		size: SIZE,
 		onUpdate() {
 			const { x, y } = this.camera;
 			const layers = this.children! as Layer[];
