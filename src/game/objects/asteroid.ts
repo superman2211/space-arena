@@ -1,10 +1,10 @@
 import { Component } from '../../graphics/component';
-import { FILL, PATH, Shape } from '../../graphics/shape';
+import { FILL, PATH } from '../../graphics/shape';
 import {
 	randomInt, mathRandom, mathCos, mathSin,
 } from '../../utils/math';
 
-function generate(array: number[], color: number, x: number, y: number, countMin: number, countMax: number, radiusMin: number, radiusMax: number): Shape {
+function generate(array: number[], color: number, x: number, y: number, countMin: number, countMax: number, radiusMin: number, radiusMax: number) {
 	let count = randomInt(countMin, countMax);
 
 	array.push(PATH, count);
@@ -21,8 +21,6 @@ function generate(array: number[], color: number, x: number, y: number, countMin
 	}
 
 	array.push(FILL, color);
-
-	return new Uint8Array(array);
 }
 
 interface AsteroidOptions {
@@ -31,20 +29,18 @@ interface AsteroidOptions {
 
 export function asteroid(options: AsteroidOptions): Component {
 	const { pallete } = options;
-	const array: number[] = [];
+	const shape: number[] = [];
 	let count = randomInt(3, 6);
 
 	while (count--) {
 		generate(
-			array, randomInt(0, pallete.length - 1),
+			shape, randomInt(0, pallete.length - 1),
 			randomInt(127 - 50, 127 + 50), // x
 			randomInt(127 - 50, 127 + 50), // y
 			7, 15,
 			40, 70,
 		);
 	}
-
-	const shape: Shape = new Uint8Array(array);
 
 	return {
 		children: [

@@ -27,7 +27,7 @@ function updateSize() {
 
 function clean() {
 	context.setTransform();
-	context.fillStyle = '#000033';
+	context.fillStyle = '#000022';
 	context.fillRect(0, 0, canvas.width, canvas.height);
 }
 

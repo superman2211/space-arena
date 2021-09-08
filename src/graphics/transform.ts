@@ -1,5 +1,8 @@
 import { ColorTransform } from '../geom/color';
 import { Matrix } from '../geom/matrix';
+import { Point } from '../geom/point';
+
+const tempMatrix = Matrix.empty();
 
 export interface TintColor {
 	color?: number;
@@ -105,5 +108,12 @@ export namespace Transform {
 		result.ro = 0;
 		result.go = 0;
 		result.bo = 0;
+	}
+
+	export function transformPoint(transform: Transform, point: Point, result: Point) {
+		const { x, y } = point;
+		getMatrix(transform, tempMatrix);
+		result.x = x * tempMatrix.a + y * tempMatrix.c + tempMatrix.x;
+		result.y = x * tempMatrix.b + y * tempMatrix.d + tempMatrix.y;
 	}
 }

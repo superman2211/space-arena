@@ -1,7 +1,7 @@
 import { ColorTransform } from '../geom/color';
 import { Pattern } from './pattern';
 
-export type Shape = Uint8Array;
+export type Shape = Uint8Array | number[];
 
 export const FILL = 0;
 export const STROKE = 1;

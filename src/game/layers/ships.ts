@@ -6,7 +6,7 @@ import {
 import { Layer } from './layer';
 import { enemy } from '../units/enemy';
 import { player } from '../units/player';
-import { SHIPS } from '../objects/ship';
+import { SHIP01, SHIPS } from '../objects/ship';
 
 export interface ShipsOptions {
 	count: number;
@@ -27,7 +27,7 @@ export function ships(options: ShipsOptions): Layer {
 	const pallete = [0xff26333E, 0xff666666, 0xffB3B3AF, 0xffF9AC35, 0xffff0000];
 
 	const playerShip = player({
-		name: randomName(), pallete, size2, camera,
+		name: SHIP01, pallete, size2, camera,
 	});
 	playerShip.rotation = -mathPI2;
 	children.push(playerShip);

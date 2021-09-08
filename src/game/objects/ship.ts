@@ -1,14 +1,19 @@
+import { Point } from '../../geom/point';
 import { Component } from '../../graphics/component';
+import { Transform } from '../../graphics/transform';
 import { getShape } from '../../resources/shapes';
 import {
 	mathCos, mathPI2, mathSin,
 } from '../../utils/math';
+import { createBullet } from '../layers/bullets';
 
 export const SHIP01 = 'ship01';
-const SHIP02 = 'ship02';
-const SHIP03 = 'ship03';
-const SHIP04 = 'ship04';
-const SHIP05 = 'ship05';
+export const SHIP02 = 'ship02';
+export const SHIP03 = 'ship03';
+export const SHIP04 = 'ship04';
+export const SHIP05 = 'ship05';
+
+const tempPoint = Point.empty();
 
 type ShipRotationTarget = -1 | 0 | 1;
 
@@ -23,22 +28,73 @@ export const SHIPS = [
 export interface ShipSettings {
 	speedMax: number;
 	rotationSpeedMax: number;
+	fireTimeout: number,
+	bulletSpeed: number,
+	bulletLength: number,
+	guns: Point[],
 }
 
 const SETTINGS: { [key: string]: ShipSettings } = {
-	[SHIP01]: { speedMax: 200, rotationSpeedMax: 2 },
-	[SHIP02]: { speedMax: 300, rotationSpeedMax: 3 },
-	[SHIP03]: { speedMax: 250, rotationSpeedMax: 3 },
-	[SHIP04]: { speedMax: 350, rotationSpeedMax: 3.5 },
-	[SHIP05]: { speedMax: 200, rotationSpeedMax: 3 },
+	[SHIP01]: {
+		speedMax: 200,
+		rotationSpeedMax: 2,
+		fireTimeout: 0.1,
+		bulletSpeed: 1000,
+		bulletLength: 30,
+		guns: [
+			{ x: 100, y: -40 },
+			{ x: 100, y: 40 },
+		],
+	},
+	[SHIP02]: {
+		speedMax: 300,
+		rotationSpeedMax: 3,
+		fireTimeout: 0.3,
+		bulletSpeed: 1000,
+		bulletLength: 30,
+		guns: [
+			{ x: 0, y: 0 },
+		],
+	},
+	[SHIP03]: {
+		speedMax: 250,
+		rotationSpeedMax: 3,
+		fireTimeout: 0.3,
+		bulletSpeed: 1000,
+		bulletLength: 30,
+		guns: [
+			{ x: 0, y: 0 },
+		],
+	},
+	[SHIP04]: {
+		speedMax: 350,
+		rotationSpeedMax: 3.5,
+		fireTimeout: 0.3,
+		bulletSpeed: 1000,
+		bulletLength: 30,
+		guns: [
+			{ x: 0, y: 0 },
+		],
+	},
+	[SHIP05]: {
+		speedMax: 200,
+		rotationSpeedMax: 3,
+		fireTimeout: 0.3,
+		bulletSpeed: 1000,
+		bulletLength: 30,
+		guns: [
+			{ x: 0, y: 0 },
+		],
+	},
 };
 
 export interface Ship extends Component {
 	speed: number,
 	rotationSpeed: number,
 	rotationTarget: ShipRotationTarget,
-	speedMax: number,
-	rotationSpeedMax: number,
+	mainFire: boolean;
+	mainFireTime: number;
+	currentGun: number;
 }
 
 export interface ShipOptions {
@@ -61,7 +117,9 @@ export function ship(options: ShipOptions): Ship {
 		speed: 0,
 		rotationSpeed: 0,
 		rotationTarget: 0,
-		...settings,
+		mainFire: false,
+		mainFireTime: 0,
+		currentGun: 0,
 		children: [
 			{
 				rotation: mathPI2,
@@ -83,10 +141,10 @@ export function ship(options: ShipOptions): Ship {
 			},
 		],
 		onUpdate(time: number) {
-			this.speed += (this.speedMax - this.speed) * time * 3;
+			this.speed += (settings.speedMax - this.speed) * time * 3;
 			const currentSpeed = time * this.speed;
 
-			const rotationTarget = this.rotationTarget * this.rotationSpeedMax;
+			const rotationTarget = this.rotationTarget * settings.rotationSpeedMax;
 			this.rotationSpeed += (rotationTarget - this.rotationSpeed) * time * 3;
 			this.rotation! += time * this.rotationSpeed;
 			const currentRotation = this.rotation!;
@@ -96,6 +154,32 @@ export function ship(options: ShipOptions): Ship {
 
 			this.x! += speedX;
 			this.y! += speedY;
+
+			if (this.mainFire && this.mainFireTime > settings.fireTimeout) {
+				const gun = settings.guns[this.currentGun];
+
+				const bullet = createBullet({
+					damage: 3,
+					speed: settings.bulletSpeed,
+					distance: 1000,
+					color: 0xffffff00,
+					width: 5,
+					length: settings.bulletLength,
+				});
+
+				Transform.transformPoint(this, gun, tempPoint);
+
+				bullet.x = tempPoint.x;
+				bullet.y = tempPoint.y;
+				bullet.rotation = this.rotation;
+
+				this.mainFireTime = 0;
+
+				this.currentGun++;
+				this.currentGun &= (settings.guns.length - 1);
+			}
+
+			this.mainFireTime += time;
 		},
 	};
 }

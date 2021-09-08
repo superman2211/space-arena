@@ -9,8 +9,6 @@ interface PlayerOptions extends ShipOptions {
 export function player(options: PlayerOptions): Ship {
 	const base = ship(options);
 
-	// const { width2, height2 } = options;
-
 	const component: Ship = {
 		...base,
 		onUpdate(time: number) {
@@ -25,12 +23,19 @@ export function player(options: PlayerOptions): Ship {
 			case 'ArrowLeft':
 				component.rotationTarget = -1;
 				break;
+
 			case 'ArrowRight':
 				component.rotationTarget = 1;
 				break;
+
+			case 'Space':
+				component.mainFire = true;
+				break;
+
 			default:
 				break;
 		}
+
 		e.preventDefault();
 		playBackground();
 	});
@@ -45,9 +50,14 @@ export function player(options: PlayerOptions): Ship {
 				component.rotationTarget = 0;
 				break;
 
+			case 'Space':
+				component.mainFire = false;
+				break;
+
 			default:
 				break;
 		}
+
 		e.preventDefault();
 	});
 

@@ -5,6 +5,7 @@ import { asteroids } from './layers/asteroids';
 import { ships } from './layers/ships';
 import { space } from './layers/space';
 import { planets } from './layers/planets';
+import { bullets } from './layers/bullets';
 
 const SIZE = 4096;
 
@@ -15,6 +16,7 @@ interface Game extends Component {
 
 export function game(): Game {
 	const camera = Point.empty();
+
 	return {
 		camera,
 		children: [
@@ -30,6 +32,7 @@ export function game(): Game {
 			asteroids({
 				count: 50, parallax: 0.5, scale: 0.6, size: SIZE, brightness: -0.4,
 			}),
+			bullets,
 			ships({
 				count: 20, size: SIZE, camera,
 			}),
