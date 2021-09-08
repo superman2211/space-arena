@@ -21,7 +21,7 @@ export function game(): Game {
 		camera,
 		children: [
 			space({
-				stars: 10000, parallax: 0.1, size: SIZE,
+				stars: 10000, parallax: 0.1, size: SIZE, bigStartsChance: 0.1,
 			}),
 			planets({
 				parallax: 0.2, size: SIZE,
