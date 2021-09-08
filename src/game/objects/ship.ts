@@ -49,41 +49,45 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 	[SHIP02]: {
 		speedMax: 300,
 		rotationSpeedMax: 3,
-		fireTimeout: 0.3,
+		fireTimeout: 0.1,
 		bulletSpeed: 1000,
 		bulletLength: 30,
 		guns: [
-			{ x: 0, y: 0 },
+			{ x: 0, y: -45 },
+			{ x: 0, y: 45 },
 		],
 	},
 	[SHIP03]: {
 		speedMax: 250,
 		rotationSpeedMax: 3,
-		fireTimeout: 0.3,
+		fireTimeout: 0.1,
 		bulletSpeed: 1000,
 		bulletLength: 30,
 		guns: [
-			{ x: 0, y: 0 },
+			{ x: 90, y: -35 },
+			{ x: 90, y: 35 },
 		],
 	},
 	[SHIP04]: {
 		speedMax: 350,
 		rotationSpeedMax: 3.5,
-		fireTimeout: 0.3,
+		fireTimeout: 0.1,
 		bulletSpeed: 1000,
 		bulletLength: 30,
 		guns: [
-			{ x: 0, y: 0 },
+			{ x: 50, y: -70 },
+			{ x: 50, y: 70 },
 		],
 	},
 	[SHIP05]: {
 		speedMax: 200,
 		rotationSpeedMax: 3,
-		fireTimeout: 0.3,
+		fireTimeout: 0.1,
 		bulletSpeed: 1000,
 		bulletLength: 30,
 		guns: [
-			{ x: 0, y: 0 },
+			{ x: 50, y: -60 },
+			{ x: 50, y: 60 },
 		],
 	},
 };
@@ -162,7 +166,7 @@ export function ship(options: ShipOptions): Ship {
 					damage: 3,
 					speed: settings.bulletSpeed,
 					distance: 1000,
-					color: 0xffffff00,
+					color: 0xffff6666,
 					width: 5,
 					length: settings.bulletLength,
 				});

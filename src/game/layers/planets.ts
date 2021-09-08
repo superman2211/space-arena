@@ -82,7 +82,7 @@ export function planets(options: PlanetsOptions): Layer {
 			// mars
 			image: createPlanet(
 				1536,
-				[0xffff0000, 0xffff0000, 0x22ff0000, 0],
+				[0xffbb0000, 0xffbb0000, 0x22bb0000, 0],
 				[0, 0.3, 0.33, 1],
 				true,
 			),
