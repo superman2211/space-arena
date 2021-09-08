@@ -1,4 +1,5 @@
 import { Point } from '../../geom/point';
+import { playBackground } from '../../media/background-sound';
 import { Ship, ship, ShipOptions } from '../objects/ship';
 
 interface PlayerOptions extends ShipOptions {
@@ -31,6 +32,7 @@ export function player(options: PlayerOptions): Ship {
 				break;
 		}
 		e.preventDefault();
+		playBackground();
 	});
 
 	document.addEventListener('keyup', (e) => {
