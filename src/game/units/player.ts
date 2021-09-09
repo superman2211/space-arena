@@ -32,6 +32,10 @@ export function player(options: PlayerOptions): Ship {
 				component.mainFire = true;
 				break;
 
+			case 'Enter':
+				component.shootRocket();
+				break;
+
 			default:
 				break;
 		}

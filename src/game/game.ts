@@ -1,4 +1,4 @@
-import { Point } from '../geom/point';
+import { createPoint, Point } from '../geom/point';
 import { Component } from '../graphics/component';
 import { Layer } from './layers/layer';
 import { asteroids } from './layers/asteroids';
@@ -6,6 +6,7 @@ import { ships } from './layers/ships';
 import { space } from './layers/space';
 import { planets } from './layers/planets';
 import { bullets } from './layers/bullets';
+import { Connector } from './layers/connector';
 
 const SIZE = 4096;
 
@@ -15,7 +16,9 @@ interface Game extends Component {
 }
 
 export function game(): Game {
-	const camera = Point.empty();
+	const camera = createPoint();
+
+	const connector: Connector = {};
 
 	return {
 		camera,
@@ -32,9 +35,9 @@ export function game(): Game {
 			asteroids({
 				count: 50, parallax: 0.5, scale: 0.6, size: SIZE, brightness: -0.4,
 			}),
-			bullets,
+			bullets({ connector }),
 			ships({
-				count: 20, size: SIZE, camera,
+				count: 20, size: SIZE, camera, connector,
 			}),
 			asteroids({
 				count: 25, parallax: 1.1, scale: 1, size: SIZE, brightness: -0.2,

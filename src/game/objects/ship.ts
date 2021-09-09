@@ -1,11 +1,12 @@
-import { Point } from '../../geom/point';
+import { createPoint, Point } from '../../geom/point';
 import { Component } from '../../graphics/component';
 import { Transform } from '../../graphics/transform';
 import { getShape } from '../../resources/shapes';
 import {
 	mathCos, mathPI2, mathSin,
 } from '../../utils/math';
-import { createBullet } from '../layers/bullets';
+import { Connector } from '../layers/connector';
+import { BULLET, ROCKET } from './bullet';
 
 export const SHIP01 = 'ship01';
 export const SHIP02 = 'ship02';
@@ -13,7 +14,12 @@ export const SHIP03 = 'ship03';
 export const SHIP04 = 'ship04';
 export const SHIP05 = 'ship05';
 
-const tempPoint = Point.empty();
+let nextId = 0;
+
+const MAX_HEALTH = 100;
+const HEALTH_EFFECT = 0.3;
+
+const tempPoint = createPoint();
 
 type ShipRotationTarget = -1 | 0 | 1;
 
@@ -31,6 +37,10 @@ export interface ShipSettings {
 	fireTimeout: number,
 	bulletSpeed: number,
 	bulletLength: number,
+	bulletDamage: number,
+	rocketSpeed: number,
+	rocketReload: number,
+	rocketDamage: number,
 	guns: Point[],
 }
 
@@ -41,6 +51,10 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 		fireTimeout: 0.1,
 		bulletSpeed: 1000,
 		bulletLength: 30,
+		bulletDamage: 3,
+		rocketSpeed: 500,
+		rocketDamage: 50,
+		rocketReload: 5,
 		guns: [
 			{ x: 100, y: -40 },
 			{ x: 100, y: 40 },
@@ -52,6 +66,10 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 		fireTimeout: 0.1,
 		bulletSpeed: 1000,
 		bulletLength: 30,
+		bulletDamage: 3,
+		rocketSpeed: 500,
+		rocketDamage: 50,
+		rocketReload: 5,
 		guns: [
 			{ x: 0, y: -45 },
 			{ x: 0, y: 45 },
@@ -63,6 +81,10 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 		fireTimeout: 0.1,
 		bulletSpeed: 1000,
 		bulletLength: 30,
+		bulletDamage: 3,
+		rocketSpeed: 500,
+		rocketDamage: 50,
+		rocketReload: 5,
 		guns: [
 			{ x: 90, y: -35 },
 			{ x: 90, y: 35 },
@@ -74,6 +96,10 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 		fireTimeout: 0.1,
 		bulletSpeed: 1000,
 		bulletLength: 30,
+		bulletDamage: 3,
+		rocketSpeed: 500,
+		rocketDamage: 50,
+		rocketReload: 5,
 		guns: [
 			{ x: 50, y: -70 },
 			{ x: 50, y: 70 },
@@ -85,6 +111,10 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 		fireTimeout: 0.1,
 		bulletSpeed: 1000,
 		bulletLength: 30,
+		bulletDamage: 3,
+		rocketSpeed: 500,
+		rocketDamage: 50,
+		rocketReload: 5,
 		guns: [
 			{ x: 50, y: -60 },
 			{ x: 50, y: 60 },
@@ -93,18 +123,26 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 };
 
 export interface Ship extends Component {
+	radius: number,
 	speed: number,
+	health: number,
+	healthEffect: number,
 	rotationSpeed: number,
 	rotationTarget: ShipRotationTarget,
-	mainFire: boolean;
-	mainFireTime: number;
-	currentGun: number;
+	mainFire: boolean,
+	mainFireTime: number,
+	rocketTime: number,
+	currentGun: number,
+	id: number,
+	changeHealth(deltaHealth: number): void;
+	shootRocket(): void;
 }
 
 export interface ShipOptions {
 	pallete: number[],
 	name: string,
 	size2: number,
+	connector: Connector;
 }
 
 export function ship(options: ShipOptions): Ship {
@@ -114,7 +152,11 @@ export function ship(options: ShipOptions): Ship {
 	const settings = SETTINGS[name];
 
 	return {
+		id: nextId++,
 		scale: 0.5,
+		radius: 100,
+		health: MAX_HEALTH,
+		healthEffect: 0,
 		x: 0,
 		y: 0,
 		rotation: 0,
@@ -124,6 +166,7 @@ export function ship(options: ShipOptions): Ship {
 		mainFire: false,
 		mainFireTime: 0,
 		currentGun: 0,
+		rocketTime: 0,
 		children: [
 			{
 				rotation: mathPI2,
@@ -145,6 +188,7 @@ export function ship(options: ShipOptions): Ship {
 			},
 		],
 		onUpdate(time: number) {
+			// moving
 			this.speed += (settings.speedMax - this.speed) * time * 3;
 			const currentSpeed = time * this.speed;
 
@@ -159,16 +203,19 @@ export function ship(options: ShipOptions): Ship {
 			this.x! += speedX;
 			this.y! += speedY;
 
+			// fire
 			if (this.mainFire && this.mainFireTime > settings.fireTimeout) {
 				const gun = settings.guns[this.currentGun];
 
-				const bullet = createBullet({
-					damage: 3,
+				const bullet = options.connector.getBullets!().create({
+					id: this.id,
+					damage: settings.bulletDamage,
 					speed: settings.bulletSpeed,
 					distance: 1000,
 					color: 0xffff6666,
 					width: 5,
 					length: settings.bulletLength,
+					type: BULLET,
 				});
 
 				Transform.transformPoint(this, gun, tempPoint);
@@ -182,8 +229,63 @@ export function ship(options: ShipOptions): Ship {
 				this.currentGun++;
 				this.currentGun &= (settings.guns.length - 1);
 			}
-
 			this.mainFireTime += time;
+
+			// health effect
+			if (this.healthEffect > 0) {
+				this.healthEffect -= time;
+				if (this.healthEffect < 0) {
+					this.healthEffect = 0;
+				}
+				this.tint = { color: 0xff00ff00, value: this.healthEffect / HEALTH_EFFECT };
+			} else if (this.healthEffect < 0) {
+				this.healthEffect += time;
+				if (this.healthEffect > 0) {
+					this.healthEffect = 0;
+				}
+				this.tint = { color: 0xffffffff, value: -this.healthEffect / HEALTH_EFFECT };
+			}
+
+			// rocket
+			if (this.rocketTime < settings.rocketReload) {
+				this.rocketTime += time;
+			}
+		},
+		shootRocket() {
+			if (this.rocketTime < settings.rocketReload) {
+				return;
+			}
+			this.rocketTime = 0;
+
+			const rocket = options.connector.getBullets!().create({
+				id: this.id,
+				damage: settings.rocketDamage,
+				speed: settings.rocketSpeed,
+				distance: 2000,
+				color: 0xffff66ff,
+				width: 10,
+				length: 40,
+				type: ROCKET,
+			});
+
+			rocket.x = this.x;
+			rocket.y = this.y;
+			rocket.rotation = this.rotation;
+		},
+		changeHealth(deltaHealth: number) {
+			this.health += deltaHealth;
+
+			if (deltaHealth > 0) {
+				if (this.health > MAX_HEALTH) {
+					this.health = MAX_HEALTH;
+				}
+				this.healthEffect = HEALTH_EFFECT;
+			} else if (deltaHealth < 0) {
+				this.healthEffect = -HEALTH_EFFECT;
+				if (this.health <= 0) {
+					options.connector.getShips!().destroy(this);
+				}
+			}
 		},
 	};
 }
