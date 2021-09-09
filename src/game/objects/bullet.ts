@@ -11,6 +11,7 @@ export const ROCKET = 1;
 export const BOMB = 2;
 
 export interface Bullet extends Component {
+	speed: number;
 	distance: number;
 	id: number;
 	damage: number,
@@ -22,6 +23,7 @@ export interface BulletOptions {
 	id: number,
 	damage: number,
 	speed: number,
+	acceleration: number,
 	distance: number,
 	color: number,
 	width: number,
@@ -32,13 +34,14 @@ export interface BulletOptions {
 
 export function bullet(options: BulletOptions): Bullet {
 	const {
-		speed, distance, width, length, color, damage, type, connector,
+		speed, distance, width, length, color, damage, type, connector, id, acceleration
 	} = options;
 
 	return {
 		type,
 		damage,
-		id: options.id,
+		speed,
+		id,
 		x: 0,
 		y: 0,
 		rotation: 0,
@@ -59,9 +62,11 @@ export function bullet(options: BulletOptions): Bullet {
 					const targetRotation = mathAtan2(this.target.y! - this.y!, this.target.x! - this.x!);
 					this.rotation! += deltaAngle(targetRotation, this.rotation!) * time * 5;
 				}
+
+				this.speed += time * acceleration;
 			}
 
-			const delta = speed * time;
+			const delta = this.speed * time;
 			this.x! += delta * mathCos(this.rotation!);
 			this.y! += delta * mathSin(this.rotation!);
 

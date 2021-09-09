@@ -39,6 +39,7 @@ export interface ShipSettings {
 	bulletLength: number,
 	bulletDamage: number,
 	rocketSpeed: number,
+	rocketAcceleration: number,
 	rocketReload: number,
 	rocketDamage: number,
 	guns: Point[],
@@ -52,7 +53,8 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 		bulletSpeed: 1000,
 		bulletLength: 30,
 		bulletDamage: 3,
-		rocketSpeed: 500,
+		rocketSpeed: 200,
+		rocketAcceleration: 1000,
 		rocketDamage: 50,
 		rocketReload: 5,
 		guns: [
@@ -67,7 +69,8 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 		bulletSpeed: 1000,
 		bulletLength: 30,
 		bulletDamage: 3,
-		rocketSpeed: 500,
+		rocketSpeed: 300,
+		rocketAcceleration: 1000,
 		rocketDamage: 50,
 		rocketReload: 5,
 		guns: [
@@ -82,7 +85,8 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 		bulletSpeed: 1000,
 		bulletLength: 30,
 		bulletDamage: 3,
-		rocketSpeed: 500,
+		rocketSpeed: 250,
+		rocketAcceleration: 1000,
 		rocketDamage: 50,
 		rocketReload: 5,
 		guns: [
@@ -97,7 +101,8 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 		bulletSpeed: 1000,
 		bulletLength: 30,
 		bulletDamage: 3,
-		rocketSpeed: 500,
+		rocketSpeed: 350,
+		rocketAcceleration: 1000,
 		rocketDamage: 50,
 		rocketReload: 5,
 		guns: [
@@ -112,7 +117,8 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 		bulletSpeed: 1000,
 		bulletLength: 30,
 		bulletDamage: 3,
-		rocketSpeed: 500,
+		rocketSpeed: 200,
+		rocketAcceleration: 1000,
 		rocketDamage: 50,
 		rocketReload: 5,
 		guns: [
@@ -211,6 +217,7 @@ export function ship(options: ShipOptions): Ship {
 					id: this.id,
 					damage: settings.bulletDamage,
 					speed: settings.bulletSpeed,
+					acceleration: 0,
 					distance: 1000,
 					color: 0xffff6666,
 					width: 5,
@@ -256,12 +263,13 @@ export function ship(options: ShipOptions): Ship {
 			if (this.rocketTime < settings.rocketReload) {
 				return;
 			}
-			this.rocketTime = 0;
+			// this.rocketTime = 0;
 
 			const rocket = connector.getBullets!().create({
 				id: this.id,
 				damage: settings.rocketDamage,
 				speed: settings.rocketSpeed,
+				acceleration: settings.rocketAcceleration,
 				distance: 2000,
 				color: 0xffff66ff,
 				width: 10,
