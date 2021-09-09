@@ -34,7 +34,7 @@ export interface BulletOptions {
 
 export function bullet(options: BulletOptions): Bullet {
 	const {
-		speed, distance, width, length, color, damage, type, connector, id, acceleration
+		speed, distance, width, length, color, damage, type, connector, id, acceleration,
 	} = options;
 
 	return {
