@@ -32,7 +32,7 @@ export function player(options: PlayerOptions): Ship {
 				component.mainFire = true;
 				break;
 
-			case 'Enter':
+			case 'ArrowUp':
 				component.shootRocket();
 				break;
 

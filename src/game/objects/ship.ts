@@ -146,7 +146,7 @@ export interface ShipOptions {
 }
 
 export function ship(options: ShipOptions): Ship {
-	const { pallete, name } = options;
+	const { pallete, name, connector } = options;
 
 	const shape = getShape(name);
 	const settings = SETTINGS[name];
@@ -207,7 +207,7 @@ export function ship(options: ShipOptions): Ship {
 			if (this.mainFire && this.mainFireTime > settings.fireTimeout) {
 				const gun = settings.guns[this.currentGun];
 
-				const bullet = options.connector.getBullets!().create({
+				const bullet = connector.getBullets!().create({
 					id: this.id,
 					damage: settings.bulletDamage,
 					speed: settings.bulletSpeed,
@@ -216,6 +216,7 @@ export function ship(options: ShipOptions): Ship {
 					width: 5,
 					length: settings.bulletLength,
 					type: BULLET,
+					connector,
 				});
 
 				Transform.transformPoint(this, gun, tempPoint);
@@ -257,7 +258,7 @@ export function ship(options: ShipOptions): Ship {
 			}
 			this.rocketTime = 0;
 
-			const rocket = options.connector.getBullets!().create({
+			const rocket = connector.getBullets!().create({
 				id: this.id,
 				damage: settings.rocketDamage,
 				speed: settings.rocketSpeed,
@@ -266,6 +267,7 @@ export function ship(options: ShipOptions): Ship {
 				width: 10,
 				length: 40,
 				type: ROCKET,
+				connector,
 			});
 
 			rocket.x = this.x;
@@ -283,7 +285,7 @@ export function ship(options: ShipOptions): Ship {
 			} else if (deltaHealth < 0) {
 				this.healthEffect = -HEALTH_EFFECT;
 				if (this.health <= 0) {
-					options.connector.getShips!().destroy(this);
+					connector.getShips!().destroy(this);
 				}
 			}
 		},

@@ -1,13 +1,14 @@
-import { Point } from '../../geom/point';
+import { distanceSquared, Point } from '../../geom/point';
 import { Component } from '../../graphics/component';
 import {
-	randomInt, randomFloat, math2PI, mathPI2,
+	randomInt, randomFloat, math2PI, mathPI2, mathAtan2, mathAbs, deltaAngle,
 } from '../../utils/math';
 import { Layer } from './layer';
 import { enemy } from '../units/enemy';
 import { player } from '../units/player';
 import { Ship, SHIPS } from '../objects/ship';
 import { Connector } from './connector';
+import { Bullet } from '../objects/bullet';
 
 export interface ShipsOptions {
 	count: number;
@@ -18,6 +19,7 @@ export interface ShipsOptions {
 
 export interface Ships extends Layer {
 	destroy(s: Ship): void;
+	findTarget(s: Bullet): Ship | undefined;
 }
 
 function randomName(): string {
@@ -58,6 +60,25 @@ export function ships(options: ShipsOptions): Ships {
 			if (index !== -1) {
 				this.children!.splice(index, 1);
 			}
+		},
+		findTarget(b: Bullet): Ship | undefined {
+			const shipsList: Ship[] = this.children! as Ship[];
+			let target: Ship | undefined;
+			let targetDistance = 999999999;
+			shipsList.forEach((s) => {
+				if (s.id !== b.id) {
+					const rotation = mathAtan2(s.y! - b.y!, s.x! - b.x!);
+					const deltaRotation = mathAbs(deltaAngle(rotation, b.rotation!));
+					if (deltaRotation < 1) {
+						const distance = distanceSquared(s as Point, b as Point);
+						if (distance < targetDistance) {
+							target = s;
+							targetDistance = distance;
+						}
+					}
+				}
+			});
+			return target;
 		},
 	};
 

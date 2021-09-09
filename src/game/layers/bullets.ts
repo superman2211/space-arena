@@ -18,7 +18,6 @@ export function bullets(options: BulletsOptions): Bullets {
 		parallax: 0,
 		children: [],
 		create(o: BulletOptions): Bullet {
-			o.destroy = this.destroy.bind(this);
 			const b: Bullet = bullet(o);
 			this.children!.push(b);
 			return b;
