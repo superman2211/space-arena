@@ -21,6 +21,7 @@ export interface ShipsOptions {
 export interface Ships extends Layer {
 	destroy(s: Ship): void;
 	findTarget(p: Transform, id: number, minDistance: number, maxDistance: number): Ship | undefined;
+	start(): void;
 }
 
 function randomName(): string {
@@ -28,34 +29,13 @@ function randomName(): string {
 }
 
 export function ships(options: ShipsOptions): Ships {
-	const children: Component[] = [];
-
 	const {
 		size, camera, connector, parallax,
 	} = options;
 
 	const pallete = [0xff26333E, 0xff666666, 0xffB3B3AF, 0xffF9AC35, 0xffff0000];
 
-	const playerShip = player({
-		name: randomName(), pallete, size, camera, connector,
-	});
-	playerShip.rotation = -mathPI2;
-	children.push(playerShip);
-
-	let { count } = options;
-
-	while (count--) {
-		const child = enemy({
-			pallete, name: randomName(), size, connector,
-		});
-		child.x = randomFloat(-size, size);
-		child.y = randomFloat(-size, size);
-		child.rotation = randomFloat(0, math2PI);
-		children.push(child);
-	}
-
 	const layer: Ships = {
-		children,
 		parallax,
 		destroy(b: Ship): void {
 			const index = this.children!.indexOf(b);
@@ -82,6 +62,31 @@ export function ships(options: ShipsOptions): Ships {
 				}
 			});
 			return target;
+		},
+		start() {
+			let nextId = 0;
+
+			const children: Component[] = [];
+
+			const playerShip = player({
+				name: randomName(), pallete, size, camera, connector, id: nextId++,
+			});
+			playerShip.rotation = -mathPI2;
+			children.push(playerShip);
+
+			let { count } = options;
+
+			while (count--) {
+				const child = enemy({
+					pallete, name: randomName(), size, connector, id: nextId++,
+				});
+				child.x = randomFloat(-size, size);
+				child.y = randomFloat(-size, size);
+				child.rotation = randomFloat(0, math2PI);
+				children.push(child);
+			}
+
+			this.children = children;
 		},
 	};
 

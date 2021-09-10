@@ -16,8 +16,6 @@ export const SHIP03 = 'ship03';
 export const SHIP04 = 'ship04';
 export const SHIP05 = 'ship05';
 
-let nextId = 0;
-
 const MAX_HEALTH = 100;
 const HEALTH_EFFECT = 0.3;
 
@@ -151,11 +149,12 @@ export interface ShipOptions {
 	name: string,
 	size: number,
 	connector: Connector;
+	id: number;
 }
 
 export function ship(options: ShipOptions): Ship {
 	const {
-		pallete, name, connector, size,
+		pallete, name, connector, size, id,
 	} = options;
 
 	const sizeSquared = size * size;
@@ -164,7 +163,7 @@ export function ship(options: ShipOptions): Ship {
 	const settings = SETTINGS[name];
 
 	return {
-		id: nextId++,
+		id,
 		scale: 0.5,
 		radius: 127,
 		damageRadius: 100,

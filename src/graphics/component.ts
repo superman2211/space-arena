@@ -84,6 +84,10 @@ export namespace Component {
 	}
 
 	export function update(component: Component, time: number) {
+		if (component.enabled === false) {
+			return;
+		}
+
 		if (component.onUpdate) {
 			component.onUpdate(time);
 		}

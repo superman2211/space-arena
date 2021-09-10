@@ -11,7 +11,7 @@ import { border } from './layers/border';
 
 const SIZE = 2500;
 
-interface Game extends Component {
+export interface Game extends Component {
 	camera: Point;
 	size: number;
 }
@@ -19,7 +19,7 @@ interface Game extends Component {
 export function game(connector: Connector): Game {
 	const camera = createPoint();
 
-	return {
+	const component: Game = {
 		camera,
 		children: [
 			space({
@@ -98,4 +98,10 @@ export function game(connector: Connector): Game {
 			});
 		},
 	};
+
+	connector.getGame = () => component;
+
+	connector.getShips!().start();
+
+	return component;
 }

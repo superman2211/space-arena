@@ -28,7 +28,7 @@ export function ui(uiOptions: UIOptions): Component {
 		return 0;
 	}
 
-	function getEnemies() {
+	function getOpponents() {
 		let shipsCount = connector.getShips!().children!.length;
 		const player = getPlayer();
 		if (player) {
@@ -66,14 +66,33 @@ export function ui(uiOptions: UIOptions): Component {
 		text: { ...style, align: 0.5 },
 	};
 
+	const result: Component = {
+		text: { ...style, size: 50, align: 0.5 },
+	};
+
+	const instruction: Component = {
+		text: { ...style, align: 0.5 },
+	};
+
+	function finish(message: string) {
+		result.text!.value = message;
+		instruction.text!.value = 'press ENTER to start again';
+		connector.getGame!().enabled = false;
+	}
+
 	return {
 		children: [
 			health,
 			opponents,
 			reload,
+			result,
+			instruction,
 		],
 		onUpdate() {
-			health.text!.value = `health: ${getHealth()} %`;
+			const healthValue = getHealth();
+			const opponentsValue = getOpponents();
+
+			health.text!.value = `health: ${healthValue} %`;
 			health.x = border / this.scale!;
 			health.y = border / this.scale!;
 
@@ -81,9 +100,31 @@ export function ui(uiOptions: UIOptions): Component {
 			reload.x = (options.getWidth() / 2) / this.scale!;
 			reload.y = border / this.scale!;
 
-			opponents.text!.value = `opponents: ${getEnemies()}`;
+			opponents.text!.value = `opponents: ${opponentsValue}`;
 			opponents.x = (options.getWidth() - border) / this.scale!;
 			opponents.y = border / this.scale!;
+
+			result.x = (options.getWidth() / 2) / this.scale!;
+			result.y = (options.getHeight() / 2 - 50) / this.scale!;
+
+			instruction.x = (options.getWidth() / 2) / this.scale!;
+			instruction.y = (options.getHeight() - 30 - border) / this.scale!;
+
+			if (opponentsValue === 0) {
+				finish('WIN!');
+			} else if (healthValue <= 0) {
+				finish('WASTED!');
+			} else {
+				result.text!.value = '';
+				instruction.text!.value = 'LEFT & RIGHT - move    SPACE - fire    UP - rocket';
+			}
+		},
+		onKeyDown(e) {
+			if (e.code === 'Enter' && !connector.getGame!().enabled) {
+				connector.getGame!().enabled = true;
+				connector.getShips!().start();
+				connector.getBullets!().children = [];
+			}
 		},
 	};
 }
