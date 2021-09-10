@@ -25,6 +25,7 @@ function generate(array: number[], color: number, x: number, y: number, countMin
 
 interface AsteroidOptions {
 	pallete: number[],
+	rotationSpeed: number,
 }
 
 export function asteroid(options: AsteroidOptions): Component {
@@ -47,9 +48,15 @@ export function asteroid(options: AsteroidOptions): Component {
 			{
 				pallete,
 				shape,
+				rotation: 0,
 				x: -127,
 				y: -127,
 			},
 		],
+		onUpdate(time: number) {
+			if (options.rotationSpeed) {
+				this.rotation! += options.rotationSpeed * time;
+			}
+		},
 	};
 }

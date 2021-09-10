@@ -1,4 +1,6 @@
-import { createPoint, Point } from '../../geom/point';
+import {
+	createPoint, Point, pointLengthSquared,
+} from '../../geom/point';
 import { Component } from '../../graphics/component';
 import { Transform } from '../../graphics/transform';
 import { getShape } from '../../resources/shapes';
@@ -152,7 +154,11 @@ export interface ShipOptions {
 }
 
 export function ship(options: ShipOptions): Ship {
-	const { pallete, name, connector } = options;
+	const {
+		pallete, name, connector, size2,
+	} = options;
+
+	const size2Squared = size2 * size2;
 
 	const shape = getShape(name);
 	const settings = SETTINGS[name];
@@ -209,6 +215,11 @@ export function ship(options: ShipOptions): Ship {
 			this.x! += speedX;
 			this.y! += speedY;
 
+			const v = true;
+			if (v) {
+				return;
+			}
+
 			// fire
 			if (this.mainFire && this.mainFireTime > settings.fireTimeout) {
 				const gun = settings.guns[this.currentGun];
@@ -257,6 +268,12 @@ export function ship(options: ShipOptions): Ship {
 			// rocket
 			if (this.rocketTime < settings.rocketReload) {
 				this.rocketTime += time;
+			}
+
+			// check border
+			const centerDistance = pointLengthSquared(this as Point);
+			if (centerDistance > size2Squared) {
+				this.changeHealth(-1000);
 			}
 		},
 		shootRocket() {

@@ -7,8 +7,9 @@ import { space } from './layers/space';
 import { planets } from './layers/planets';
 import { bullets } from './layers/bullets';
 import { Connector } from './layers/connector';
+import { border } from './layers/border';
 
-const SIZE = 4096;
+const SIZE = 2500;
 
 interface Game extends Component {
 	camera: Point;
@@ -24,26 +25,69 @@ export function game(): Game {
 		camera,
 		children: [
 			space({
-				stars: 10000, parallax: 0.1, size: SIZE, bigStartsChance: 0.1,
+				stars: 10000,
+				parallax: 0.3,
+				size: SIZE,
+				bigStartsChance: 0.1,
 			}),
 			planets({
-				parallax: 0.2, size: SIZE,
+				parallax: 0.4,
+				size: SIZE,
 			}),
 			asteroids({
-				count: 100, parallax: 0.3, scale: 0.4, size: SIZE, brightness: -0.6,
+				count: 100,
+				parallax: 0.8,
+				scale: 0.4,
+				size: SIZE,
+				brightness: -0.6,
+				pallete: [0xff555555, 0xff666666],
 			}),
 			asteroids({
-				count: 50, parallax: 0.5, scale: 0.6, size: SIZE, brightness: -0.4,
+				count: 50,
+				parallax: 0.9,
+				scale: 0.6,
+				size: SIZE,
+				brightness: -0.4,
+				pallete: [0xff555555, 0xff666666],
 			}),
-			bullets({ connector }),
+			asteroids({
+				count: 20,
+				parallax: 1,
+				scale: 1,
+				size: SIZE,
+				brightness: 0,
+				pallete: [0xff550000, 0xff770000],
+			}),
+			bullets({
+				connector,
+				parallax: 1,
+			}),
 			ships({
-				count: 20, size: SIZE, camera, connector,
+				count: 20,
+				size: SIZE,
+				camera,
+				connector,
+				parallax: 1,
+			}),
+			border({
+				size: SIZE,
+				parallax: 1,
 			}),
 			asteroids({
-				count: 25, parallax: 1.1, scale: 1, size: SIZE, brightness: -0.2,
+				count: 25,
+				parallax: 1.2,
+				scale: 1,
+				size: SIZE,
+				brightness: -0.2,
+				pallete: [0x33555555, 0x33666666],
 			}),
 			asteroids({
-				count: 15, parallax: 1.2, scale: 1.2, size: SIZE, brightness: 0,
+				count: 15,
+				parallax: 1.5,
+				scale: 1.5,
+				size: SIZE,
+				brightness: 0,
+				pallete: [0x33555555, 0x33666666],
 			}),
 		],
 		size: SIZE,
@@ -51,8 +95,8 @@ export function game(): Game {
 			const { x, y } = this.camera;
 			const layers = this.children! as Layer[];
 			layers.forEach((layer) => {
-				layer.x = -x - x * layer.parallax;
-				layer.y = -y - y * layer.parallax;
+				layer.x = -x * layer.parallax;
+				layer.y = -y * layer.parallax;
 			});
 		},
 	};

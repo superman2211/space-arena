@@ -15,11 +15,12 @@ export interface ShipsOptions {
 	size: number;
 	camera: Point;
 	connector: Connector;
+	parallax: number,
 }
 
 export interface Ships extends Layer {
 	destroy(s: Ship): void;
-	findTarget(p: Transform, id: number, distance: number): Ship | undefined;
+	findTarget(p: Transform, id: number, minDistance: number, maxDistance: number): Ship | undefined;
 }
 
 function randomName(): string {
@@ -29,7 +30,7 @@ function randomName(): string {
 export function ships(options: ShipsOptions): Ships {
 	const children: Component[] = [];
 
-	const { size, camera, connector } = options;
+	const { size, camera, connector, parallax } = options;
 	const size2 = size / 2;
 
 	const pallete = [0xff26333E, 0xff666666, 0xffB3B3AF, 0xffF9AC35, 0xffff0000];
@@ -54,26 +55,27 @@ export function ships(options: ShipsOptions): Ships {
 
 	const layer: Ships = {
 		children,
-		parallax: 0,
+		parallax,
 		destroy(b: Ship): void {
 			const index = this.children!.indexOf(b);
 			if (index !== -1) {
 				this.children!.splice(index, 1);
 			}
 		},
-		findTarget(t: Transform, id: number, distanceMax: number): Ship | undefined {
+		findTarget(t: Transform, id: number, distanceMin: number, distanceMax: number): Ship | undefined {
 			const shipsList: Ship[] = this.children! as Ship[];
 			let target: Ship | undefined;
-			let targetDistance = distanceMax * distanceMax;
+			const targetDistanceMin = distanceMin * distanceMin;
+			let targetDistanceMax = distanceMax * distanceMax;
 			shipsList.forEach((s) => {
 				if (s.id !== id) {
 					const rotation = mathAtan2(s.y! - t.y!, s.x! - t.x!);
 					const deltaRotation = mathAbs(deltaAngle(rotation, t.rotation!));
 					if (deltaRotation < 1) {
 						const distance = distanceSquared(s as Point, t as Point);
-						if (distance < targetDistance) {
+						if (targetDistanceMin < distance && distance < targetDistanceMax) {
 							target = s;
-							targetDistance = distance;
+							targetDistanceMax = distance;
 						}
 					}
 				}

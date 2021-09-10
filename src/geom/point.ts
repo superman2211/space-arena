@@ -12,3 +12,7 @@ export function distanceSquared(p0: Point, p1: Point): number {
 	const dy = p0.y - p1.y;
 	return dx * dx + dy * dy;
 }
+
+export function pointLengthSquared(p: Point): number {
+	return p.x * p.x + p.y * p.y;
+}

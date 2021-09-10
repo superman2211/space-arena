@@ -58,7 +58,7 @@ export function enemy(options: ShipOptions): Enemy {
 			// find target
 			this.findTargetTime -= time;
 			if (this.findTargetTime <= 0 && !this.target) {
-				this.target = options.connector.getShips!().findTarget(this, this.id, 1000);
+				this.target = options.connector.getShips!().findTarget(this, this.id, 100, 1000);
 			}
 
 			// attack

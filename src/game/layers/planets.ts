@@ -42,7 +42,7 @@ export function planets(options: PlanetsOptions): Layer {
 		parallax, size,
 	} = options;
 
-	const size2 = size / 2;
+	const size2 = size / 3;
 
 	const children: Component[] = [
 		{
@@ -53,8 +53,8 @@ export function planets(options: PlanetsOptions): Layer {
 				[0, 0.3, 0.33, 1],
 				false,
 			),
-			x: size2 / 2 - 1024,
-			y: size2 / 2 - 1024,
+			x: size2 - 1024,
+			y: size2 - 1024,
 		},
 		{
 			// earth
@@ -64,8 +64,8 @@ export function planets(options: PlanetsOptions): Layer {
 				[0, 0.5, 0.53, 1],
 				true,
 			),
-			x: -size2 / 2 - 512,
-			y: -size2 / 2 - 512,
+			x: -size2 - 512,
+			y: -size2 - 512,
 		},
 		{
 			// moon
@@ -75,8 +75,8 @@ export function planets(options: PlanetsOptions): Layer {
 				[0, 0.5, 0.53, 0.6, 1],
 				true,
 			),
-			x: -size2 / 2 - 512,
-			y: -size2 / 2 - 512 + 128,
+			x: -size2 - 512,
+			y: -size2 - 512 + 128,
 		},
 		{
 			// mars
@@ -86,8 +86,8 @@ export function planets(options: PlanetsOptions): Layer {
 				[0, 0.3, 0.33, 1],
 				true,
 			),
-			x: size2 / 2 - 768,
-			y: -size2 / 2 - 768,
+			x: size2 - 768,
+			y: -size2 - 768,
 		},
 		{
 			// black
@@ -97,8 +97,8 @@ export function planets(options: PlanetsOptions): Layer {
 				[0, 0.3, 0.33, 1],
 				false,
 			),
-			x: -size2 / 2 - 1024,
-			y: size2 / 2 - 1024,
+			x: -size2 - 1024,
+			y: size2 - 1024,
 		},
 	];
 

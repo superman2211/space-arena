@@ -11,11 +11,13 @@ export interface Bullets extends Layer {
 
 export interface BulletsOptions {
 	connector: Connector;
+	parallax: number,
 }
 
 export function bullets(options: BulletsOptions): Bullets {
+	const { parallax, connector } = options;
 	const layer: Bullets = {
-		parallax: 0,
+		parallax,
 		children: [],
 		create(o: BulletOptions): Bullet {
 			const b: Bullet = bullet(o);
@@ -29,7 +31,7 @@ export function bullets(options: BulletsOptions): Bullets {
 			}
 		},
 		onUpdate() {
-			const shipsList: Ship[] = options.connector.getShips!().children! as Ship[];
+			const shipsList: Ship[] = connector.getShips!().children! as Ship[];
 			const bulletsList: Bullet[] = this.children! as Bullet[];
 
 			bulletsList.forEach((b) => {

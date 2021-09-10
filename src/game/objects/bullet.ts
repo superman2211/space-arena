@@ -55,7 +55,7 @@ export function bullet(options: BulletOptions): Bullet {
 				}
 
 				if (!this.target) {
-					this.target = connector.getShips!().findTarget(this, this.id, 2000);
+					this.target = connector.getShips!().findTarget(this, this.id, 100, 2000);
 				}
 
 				if (this.target) {

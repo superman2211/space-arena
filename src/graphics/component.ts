@@ -12,6 +12,7 @@ export interface Component extends Transform, Update, Keyboard {
 	text?: Text;
 	children?: Component[];
 	image?: Image;
+	radius?: number;
 }
 
 export namespace Component {

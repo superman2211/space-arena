@@ -61,6 +61,8 @@ export function space(options: SpaceOptions): Layer {
 		}
 	}
 
+	console.log('space', children.length);
+
 	return {
 		children,
 		parallax,
