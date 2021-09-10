@@ -1,5 +1,4 @@
 import { Point } from '../../geom/point';
-import { playBackground } from '../../media/background-sound';
 import { Ship, ship, ShipOptions } from '../objects/ship';
 
 interface PlayerOptions extends ShipOptions {
@@ -9,61 +8,52 @@ interface PlayerOptions extends ShipOptions {
 export function player(options: PlayerOptions): Ship {
 	const base = ship(options);
 
-	const component: Ship = {
+	return {
 		...base,
 		onUpdate(time: number) {
 			base.onUpdate!.call(this, time);
 			options.camera.x = this.x!;
 			options.camera.y = this.y!;
 		},
+		onKeyDown(e: KeyboardEvent): void {
+			switch (e.code) {
+				case 'ArrowLeft':
+					this.rotationTarget = -1;
+					break;
+
+				case 'ArrowRight':
+					this.rotationTarget = 1;
+					break;
+
+				case 'Space':
+					this.mainFire = true;
+					break;
+
+				case 'ArrowUp':
+					this.shootRocket();
+					break;
+
+				default:
+					break;
+			}
+		},
+		onKeyUp(e: KeyboardEvent) {
+			switch (e.code) {
+				case 'ArrowLeft':
+					this.rotationTarget = 0;
+					break;
+
+				case 'ArrowRight':
+					this.rotationTarget = 0;
+					break;
+
+				case 'Space':
+					this.mainFire = false;
+					break;
+
+				default:
+					break;
+			}
+		},
 	};
-
-	document.addEventListener('keydown', (e) => {
-		switch (e.code) {
-			case 'ArrowLeft':
-				component.rotationTarget = -1;
-				break;
-
-			case 'ArrowRight':
-				component.rotationTarget = 1;
-				break;
-
-			case 'Space':
-				component.mainFire = true;
-				break;
-
-			case 'ArrowUp':
-				component.shootRocket();
-				break;
-
-			default:
-				break;
-		}
-
-		e.preventDefault();
-		playBackground();
-	});
-
-	document.addEventListener('keyup', (e) => {
-		switch (e.code) {
-			case 'ArrowLeft':
-				component.rotationTarget = 0;
-				break;
-
-			case 'ArrowRight':
-				component.rotationTarget = 0;
-				break;
-
-			case 'Space':
-				component.mainFire = false;
-				break;
-
-			default:
-				break;
-		}
-
-		e.preventDefault();
-	});
-
-	return component;
 }

@@ -21,7 +21,7 @@ const HEALTH_EFFECT = 0.3;
 
 const tempPoint = createPoint();
 
-type ShipRotationTarget = -1 | 0 | 1;
+export type ShipRotationTarget = -1 | 0 | 1;
 
 export const SHIPS = [
 	SHIP01,

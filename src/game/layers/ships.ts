@@ -8,7 +8,7 @@ import { enemy } from '../units/enemy';
 import { player } from '../units/player';
 import { Ship, SHIPS } from '../objects/ship';
 import { Connector } from './connector';
-import { Bullet } from '../objects/bullet';
+import { Transform } from '../../graphics/transform';
 
 export interface ShipsOptions {
 	count: number;
@@ -19,7 +19,7 @@ export interface ShipsOptions {
 
 export interface Ships extends Layer {
 	destroy(s: Ship): void;
-	findTarget(s: Bullet): Ship | undefined;
+	findTarget(p: Transform, id: number, distance: number): Ship | undefined;
 }
 
 function randomName(): string {
@@ -61,16 +61,16 @@ export function ships(options: ShipsOptions): Ships {
 				this.children!.splice(index, 1);
 			}
 		},
-		findTarget(b: Bullet): Ship | undefined {
+		findTarget(t: Transform, id: number, distanceMax: number): Ship | undefined {
 			const shipsList: Ship[] = this.children! as Ship[];
 			let target: Ship | undefined;
-			let targetDistance = 999999999;
+			let targetDistance = distanceMax * distanceMax;
 			shipsList.forEach((s) => {
-				if (s.id !== b.id) {
-					const rotation = mathAtan2(s.y! - b.y!, s.x! - b.x!);
-					const deltaRotation = mathAbs(deltaAngle(rotation, b.rotation!));
+				if (s.id !== id) {
+					const rotation = mathAtan2(s.y! - t.y!, s.x! - t.x!);
+					const deltaRotation = mathAbs(deltaAngle(rotation, t.rotation!));
 					if (deltaRotation < 1) {
-						const distance = distanceSquared(s as Point, b as Point);
+						const distance = distanceSquared(s as Point, t as Point);
 						if (distance < targetDistance) {
 							target = s;
 							targetDistance = distance;

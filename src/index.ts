@@ -22,9 +22,18 @@ function update() {
 
 function start() {
 	app = application({ getWidth: () => innerWidth, getHeight: () => innerHeight });
-	console.log(app);
+
 	oldTime = performance.now();
 	update();
+
+	document.addEventListener('keydown', (e) => {
+		Component.keyDown(app, e);
+		e.preventDefault();
+	});
+	document.addEventListener('keyup', (e) => {
+		Component.keyUp(app, e);
+		e.preventDefault();
+	});
 }
 
 async function preload() {

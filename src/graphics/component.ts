@@ -4,9 +4,9 @@ import { renderImage, Image } from './image';
 import { renderShape, Shape } from './shape';
 import { renderText, Text } from './text';
 import { Transform } from './transform';
-import { Update } from './update';
+import { Keyboard, Update } from './extensions';
 
-export interface Component extends Transform, Update {
+export interface Component extends Transform, Update, Keyboard {
 	shape?: Shape;
 	pallete?: number[];
 	text?: Text;
@@ -64,5 +64,33 @@ export namespace Component {
 		}
 
 		children.forEach((child) => update(child, time));
+	}
+
+	export function keyDown(component: Component, e: KeyboardEvent) {
+		if (component.onKeyDown) {
+			component.onKeyDown(e);
+		}
+
+		const { children } = component;
+
+		if (!children) {
+			return;
+		}
+
+		children.forEach((child) => keyDown(child, e));
+	}
+
+	export function keyUp(component: Component, e: KeyboardEvent) {
+		if (component.onKeyUp) {
+			component.onKeyUp(e);
+		}
+
+		const { children } = component;
+
+		if (!children) {
+			return;
+		}
+
+		children.forEach((child) => keyUp(child, e));
 	}
 }
