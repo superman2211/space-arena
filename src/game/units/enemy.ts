@@ -8,6 +8,7 @@ import {
 
 interface Enemy extends Ship {
 	target?: Ship;
+	findTargetTime: number;
 	targetTime: number;
 	rotationTime: number;
 	reactionTime: number;
@@ -23,6 +24,7 @@ export function enemy(options: ShipOptions): Enemy {
 		targetTime: 0,
 		rotationTime: 0,
 		reactionTime: 0,
+		findTargetTime: 0,
 		onUpdate(time: number) {
 			base.onUpdate!.call(this, time);
 
@@ -45,14 +47,17 @@ export function enemy(options: ShipOptions): Enemy {
 				}
 			}
 
+			// reset target
 			this.reactionTime -= time;
 			if (this.reactionTime <= 0) {
 				this.reactionTime = randomFloat(3, 5);
 				this.target = undefined;
+				this.findTargetTime = randomFloat(0.5, 2);
 			}
 
 			// find target
-			if (!this.target) {
+			this.findTargetTime -= time;
+			if (this.findTargetTime <= 0 && !this.target) {
 				this.target = options.connector.getShips!().findTarget(this, this.id, 1000);
 			}
 
@@ -61,6 +66,7 @@ export function enemy(options: ShipOptions): Enemy {
 				const targetRotation = mathAtan2(this.target.y! - this.y!, this.target.x! - this.x!);
 				this.rotation! += deltaAngle(targetRotation, this.rotation!) * time * 5;
 				this.mainFire = true;
+				this.shootRocket();
 			} else {
 				this.mainFire = false;
 			}

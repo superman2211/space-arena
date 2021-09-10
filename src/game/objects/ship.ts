@@ -263,7 +263,7 @@ export function ship(options: ShipOptions): Ship {
 			if (this.rocketTime < settings.rocketReload) {
 				return;
 			}
-			// this.rocketTime = 0;
+			this.rocketTime = 0;
 
 			const rocket = connector.getBullets!().create({
 				id: this.id,
