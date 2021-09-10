@@ -6,7 +6,7 @@ import { ships } from './layers/ships';
 import { space } from './layers/space';
 import { planets } from './layers/planets';
 import { bullets } from './layers/bullets';
-import { Connector } from './layers/connector';
+import { Connector } from './connector';
 import { border } from './layers/border';
 
 const SIZE = 2500;
@@ -16,10 +16,8 @@ interface Game extends Component {
 	size: number;
 }
 
-export function game(): Game {
+export function game(connector: Connector): Game {
 	const camera = createPoint();
-
-	const connector: Connector = {};
 
 	return {
 		camera,

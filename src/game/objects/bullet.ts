@@ -4,7 +4,7 @@ import { LINE, MOVE, STROKE } from '../../graphics/shape';
 import {
 	deltaAngle, mathAtan2, mathCos, mathSin,
 } from '../../utils/math';
-import { Connector } from '../layers/connector';
+import { Connector } from '../connector';
 import { Ship } from './ship';
 
 export const BULLET = 0;

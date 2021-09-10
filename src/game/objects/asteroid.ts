@@ -57,5 +57,8 @@ export function asteroid(options: AsteroidOptions): Component {
 		radius: 50 + 70,
 		x: 0,
 		y: 0,
+		onUpdate(time) {
+			this.rotation! += options.rotationSpeed * time;
+		},
 	};
 }

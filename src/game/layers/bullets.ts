@@ -1,7 +1,7 @@
 import { distanceSquared, Point } from '../../geom/point';
 import { bullet, Bullet, BulletOptions } from '../objects/bullet';
 import { Ship } from '../objects/ship';
-import { Connector } from './connector';
+import { Connector } from '../connector';
 import { Layer } from './layer';
 
 export interface Bullets extends Layer {

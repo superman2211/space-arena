@@ -5,6 +5,7 @@ export const mathCos = Math.cos;
 export const mathAtan2 = Math.atan2;
 export const mathAbs = Math.abs;
 export const mathMax = Math.max;
+export const mathMin = Math.min;
 export const mathPI = Math.PI;
 export const math2PI = Math.PI * 2;
 export const mathPI2 = Math.PI / 2;

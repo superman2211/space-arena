@@ -1,5 +1,5 @@
-import { Bullets } from './bullets';
-import { Ships } from './ships';
+import { Bullets } from './layers/bullets';
+import { Ships } from './layers/ships';
 
 export interface Connector {
 	getShips?: () => Ships;

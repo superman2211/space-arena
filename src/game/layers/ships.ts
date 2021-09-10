@@ -7,7 +7,7 @@ import { Layer } from './layer';
 import { enemy } from '../units/enemy';
 import { player } from '../units/player';
 import { Ship, SHIPS } from '../objects/ship';
-import { Connector } from './connector';
+import { Connector } from '../connector';
 import { Transform } from '../../graphics/transform';
 
 export interface ShipsOptions {

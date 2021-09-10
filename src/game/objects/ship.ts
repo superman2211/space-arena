@@ -7,7 +7,7 @@ import { getShape } from '../../resources/shapes';
 import {
 	mathCos, mathPI2, mathSin,
 } from '../../utils/math';
-import { Connector } from '../layers/connector';
+import { Connector } from '../connector';
 import { BULLET, ROCKET } from './bullet';
 
 export const SHIP01 = 'ship01';
@@ -263,8 +263,8 @@ export function ship(options: ShipOptions): Ship {
 			}
 
 			// rocket
-			if (this.rocketTime < settings.rocketReload) {
-				this.rocketTime += time;
+			if (this.rocketTime > 0) {
+				this.rocketTime -= time;
 			}
 
 			// check border
@@ -274,10 +274,11 @@ export function ship(options: ShipOptions): Ship {
 			}
 		},
 		shootRocket() {
-			if (this.rocketTime < settings.rocketReload) {
+			if (this.rocketTime > 0) {
 				return;
 			}
-			this.rocketTime = 0;
+
+			this.rocketTime = settings.rocketReload;
 
 			const rocket = connector.getBullets!().create({
 				id: this.id,
@@ -298,9 +299,6 @@ export function ship(options: ShipOptions): Ship {
 			rocket.rotation = this.rotation;
 		},
 		changeHealth(deltaHealth: number) {
-			if (this.id === 0) {
-				console.log('health', this.health, deltaHealth);
-			}
 			this.health += deltaHealth;
 
 			if (deltaHealth > 0) {
