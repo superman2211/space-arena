@@ -49,15 +49,15 @@ export interface ShipSettings {
 
 const SETTINGS: { [key: string]: ShipSettings } = {
 	[SHIP01]: {
-		speedMax: 200,
-		rotationSpeedMax: 2,
+		speedMax: 300,
+		rotationSpeedMax: 3,
 		fireTimeout: 0.1,
 		bulletSpeed: 1000,
 		bulletLength: 30,
 		bulletDamage: 3,
 		rocketSpeed: 200,
 		rocketAcceleration: 1000,
-		rocketDamage: 50,
+		rocketDamage: 20,
 		rocketReload: 5,
 		guns: [
 			{ x: 100, y: -40 },
@@ -65,15 +65,15 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 		],
 	},
 	[SHIP02]: {
-		speedMax: 300,
-		rotationSpeedMax: 3,
+		speedMax: 350,
+		rotationSpeedMax: 3.5,
 		fireTimeout: 0.1,
 		bulletSpeed: 1000,
 		bulletLength: 30,
-		bulletDamage: 3,
+		bulletDamage: 2.5,
 		rocketSpeed: 300,
 		rocketAcceleration: 1000,
-		rocketDamage: 50,
+		rocketDamage: 15,
 		rocketReload: 5,
 		guns: [
 			{ x: 0, y: -45 },
@@ -81,15 +81,15 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 		],
 	},
 	[SHIP03]: {
-		speedMax: 250,
-		rotationSpeedMax: 3,
+		speedMax: 300,
+		rotationSpeedMax: 3.5,
 		fireTimeout: 0.1,
 		bulletSpeed: 1000,
 		bulletLength: 30,
 		bulletDamage: 3,
 		rocketSpeed: 250,
 		rocketAcceleration: 1000,
-		rocketDamage: 50,
+		rocketDamage: 20,
 		rocketReload: 5,
 		guns: [
 			{ x: 90, y: -35 },
@@ -97,15 +97,15 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 		],
 	},
 	[SHIP04]: {
-		speedMax: 350,
+		speedMax: 400,
 		rotationSpeedMax: 3.5,
 		fireTimeout: 0.1,
 		bulletSpeed: 1000,
 		bulletLength: 30,
-		bulletDamage: 3,
+		bulletDamage: 2,
 		rocketSpeed: 350,
 		rocketAcceleration: 1000,
-		rocketDamage: 50,
+		rocketDamage: 10,
 		rocketReload: 5,
 		guns: [
 			{ x: 50, y: -70 },
@@ -113,15 +113,15 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 		],
 	},
 	[SHIP05]: {
-		speedMax: 200,
-		rotationSpeedMax: 3,
+		speedMax: 300,
+		rotationSpeedMax: 3.5,
 		fireTimeout: 0.1,
 		bulletSpeed: 1000,
 		bulletLength: 30,
 		bulletDamage: 3,
 		rocketSpeed: 200,
 		rocketAcceleration: 1000,
-		rocketDamage: 50,
+		rocketDamage: 20,
 		rocketReload: 5,
 		guns: [
 			{ x: 50, y: -60 },
@@ -131,7 +131,7 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 };
 
 export interface Ship extends Component {
-	radius: number,
+	damageRadius: number,
 	speed: number,
 	health: number,
 	healthEffect: number,
@@ -149,16 +149,16 @@ export interface Ship extends Component {
 export interface ShipOptions {
 	pallete: number[],
 	name: string,
-	size2: number,
+	size: number,
 	connector: Connector;
 }
 
 export function ship(options: ShipOptions): Ship {
 	const {
-		pallete, name, connector, size2,
+		pallete, name, connector, size,
 	} = options;
 
-	const size2Squared = size2 * size2;
+	const sizeSquared = size * size;
 
 	const shape = getShape(name);
 	const settings = SETTINGS[name];
@@ -166,7 +166,8 @@ export function ship(options: ShipOptions): Ship {
 	return {
 		id: nextId++,
 		scale: 0.5,
-		radius: 100,
+		radius: 127,
+		damageRadius: 100,
 		health: MAX_HEALTH,
 		healthEffect: 0,
 		x: 0,
@@ -215,16 +216,12 @@ export function ship(options: ShipOptions): Ship {
 			this.x! += speedX;
 			this.y! += speedY;
 
-			const v = true;
-			if (v) {
-				return;
-			}
-
 			// fire
 			if (this.mainFire && this.mainFireTime > settings.fireTimeout) {
 				const gun = settings.guns[this.currentGun];
 
 				const bullet = connector.getBullets!().create({
+					size,
 					id: this.id,
 					damage: settings.bulletDamage,
 					speed: settings.bulletSpeed,
@@ -272,7 +269,7 @@ export function ship(options: ShipOptions): Ship {
 
 			// check border
 			const centerDistance = pointLengthSquared(this as Point);
-			if (centerDistance > size2Squared) {
+			if (centerDistance > sizeSquared) {
 				this.changeHealth(-1000);
 			}
 		},
@@ -284,6 +281,7 @@ export function ship(options: ShipOptions): Ship {
 
 			const rocket = connector.getBullets!().create({
 				id: this.id,
+				size,
 				damage: settings.rocketDamage,
 				speed: settings.rocketSpeed,
 				acceleration: settings.rocketAcceleration,
@@ -300,6 +298,9 @@ export function ship(options: ShipOptions): Ship {
 			rocket.rotation = this.rotation;
 		},
 		changeHealth(deltaHealth: number) {
+			if (this.id === 0) {
+				console.log('health', this.health, deltaHealth);
+			}
 			this.health += deltaHealth;
 
 			if (deltaHealth > 0) {

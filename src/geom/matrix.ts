@@ -1,3 +1,5 @@
+import { mathAbs, mathMax } from '../utils/math';
+
 export interface Matrix {
 	a: number;
 	b: number;
@@ -34,4 +36,8 @@ export namespace Matrix {
 		result.x = x;
 		result.y = y;
 	}
+}
+
+export function matrixScale(matrix: Matrix): number {
+	return mathAbs(mathMax(matrix.a, matrix.b, matrix.c, matrix.d));
 }

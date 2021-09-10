@@ -4,7 +4,13 @@ import {
 	randomInt, mathRandom, mathCos, mathSin,
 } from '../../utils/math';
 
-function generate(array: number[], color: number, x: number, y: number, countMin: number, countMax: number, radiusMin: number, radiusMax: number) {
+function generate(
+	array: number[],
+	color: number,
+	x: number, y: number,
+	countMin: number, countMax: number,
+	radiusMin: number, radiusMax: number,
+) {
 	let count = randomInt(countMin, countMax);
 
 	array.push(PATH, count);
@@ -35,28 +41,21 @@ export function asteroid(options: AsteroidOptions): Component {
 
 	while (count--) {
 		generate(
-			shape, randomInt(0, pallete.length - 1),
-			randomInt(127 - 50, 127 + 50), // x
-			randomInt(127 - 50, 127 + 50), // y
-			7, 15,
-			40, 70,
+			shape,
+			randomInt(0, pallete.length - 1), // color
+			randomInt(-50, 50), // x
+			randomInt(-50, 50), // y
+			7, 15, // count
+			40, 70, // size
 		);
 	}
 
 	return {
-		children: [
-			{
-				pallete,
-				shape,
-				rotation: 0,
-				x: -127,
-				y: -127,
-			},
-		],
-		onUpdate(time: number) {
-			if (options.rotationSpeed) {
-				this.rotation! += options.rotationSpeed * time;
-			}
-		},
+		pallete,
+		shape,
+		rotation: 0,
+		radius: 50 + 70,
+		x: 0,
+		y: 0,
 	};
 }

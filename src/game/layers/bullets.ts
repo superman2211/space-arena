@@ -38,7 +38,7 @@ export function bullets(options: BulletsOptions): Bullets {
 				shipsList.forEach((ship) => {
 					if (b.id !== ship.id) {
 						const distance = distanceSquared(b as Point, ship as Point);
-						const raduises = ship.radius * ship.radius;
+						const raduises = ship.damageRadius * ship.damageRadius;
 						if (distance < raduises) {
 							this.destroy(b);
 							ship.changeHealth(-b.damage);

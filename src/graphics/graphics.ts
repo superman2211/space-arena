@@ -1,4 +1,6 @@
-import { Component } from './component';
+import {
+	Component, getDrawCalls, resetDrawCalls,
+} from './component';
 import { ColorTransform } from '../geom/color';
 import { Matrix } from '../geom/matrix';
 
@@ -35,6 +37,8 @@ export namespace Graphics {
 	export function render(component: Component) {
 		updateSize();
 		clean();
+		// resetDrawCalls();
 		Component.render(component, matrix, colorTransform, context);
+		// console.log(getDrawCalls());
 	}
 }

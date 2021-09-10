@@ -45,6 +45,7 @@ export function space(options: SpaceOptions): Layer {
 	} = options;
 
 	const starsSize = 2048;
+	const starsSize2 = starsSize / 2;
 	const image: HTMLCanvasElement = createStars(stars, starsSize, bigStartsChance);
 
 	const children: Component[] = [];
@@ -53,9 +54,16 @@ export function space(options: SpaceOptions): Layer {
 		for (let iy = -size; iy < size; iy += starsSize) {
 			children.push(
 				{
-					image,
 					x: ix,
 					y: iy,
+					radius: starsSize2,
+					children: [
+						{
+							image,
+							x: -starsSize2,
+							y: -starsSize2,
+						},
+					],
 				},
 			);
 		}

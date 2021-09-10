@@ -1,4 +1,5 @@
 export interface Update {
+	enabled?: boolean;
 	onUpdate?: (time: number) => void;
 }
 

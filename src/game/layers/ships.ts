@@ -30,13 +30,14 @@ function randomName(): string {
 export function ships(options: ShipsOptions): Ships {
 	const children: Component[] = [];
 
-	const { size, camera, connector, parallax } = options;
-	const size2 = size / 2;
+	const {
+		size, camera, connector, parallax,
+	} = options;
 
 	const pallete = [0xff26333E, 0xff666666, 0xffB3B3AF, 0xffF9AC35, 0xffff0000];
 
 	const playerShip = player({
-		name: randomName(), pallete, size2, camera, connector,
+		name: randomName(), pallete, size, camera, connector,
 	});
 	playerShip.rotation = -mathPI2;
 	children.push(playerShip);
@@ -45,10 +46,10 @@ export function ships(options: ShipsOptions): Ships {
 
 	while (count--) {
 		const child = enemy({
-			pallete, name: randomName(), size2, connector,
+			pallete, name: randomName(), size, connector,
 		});
-		child.x = randomFloat(-size2, size2);
-		child.y = randomFloat(-size2, size2);
+		child.x = randomFloat(-size, size);
+		child.y = randomFloat(-size, size);
 		child.rotation = randomFloat(0, math2PI);
 		children.push(child);
 	}

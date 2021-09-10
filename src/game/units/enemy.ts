@@ -17,8 +17,6 @@ interface Enemy extends Ship {
 export function enemy(options: ShipOptions): Enemy {
 	const base = ship(options);
 
-	const { size2 } = options;
-
 	return {
 		...base,
 		targetTime: 0,
@@ -27,11 +25,6 @@ export function enemy(options: ShipOptions): Enemy {
 		findTargetTime: 0,
 		onUpdate(time: number) {
 			base.onUpdate!.call(this, time);
-
-			// const { x, y } = this;
-			// if (x! < -size2 || size2 < x! || y! < -size2 || size2 < y!) {
-			// 	this.rotation = randomFloat(0, math2PI);
-			// }
 
 			// rotation
 			if (!this.target) {

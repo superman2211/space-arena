@@ -1,5 +1,5 @@
 import { ColorTransform } from '../geom/color';
-import { Matrix } from '../geom/matrix';
+import { Matrix, matrixScale } from '../geom/matrix';
 import { renderImage, Image } from './image';
 import { renderShape, Shape } from './shape';
 import { renderText, Text } from './text';
@@ -12,18 +12,45 @@ export interface Component extends Transform, Update, Keyboard {
 	text?: Text;
 	children?: Component[];
 	image?: Image;
+	visible?: boolean;
 	radius?: number;
+}
+
+let drawCalls = 0;
+
+export function resetDrawCalls() {
+	drawCalls = 0;
+}
+
+export function getDrawCalls() {
+	return drawCalls;
 }
 
 export namespace Component {
 	export function render(component: Component, parentMatrix: Matrix, parentColorTranform: ColorTransform, context: CanvasRenderingContext2D) {
+		const visible = component.visible ?? true;
+		if (!visible) {
+			return;
+		}
+
 		const matrix = Matrix.empty();
-		const colorTransform = ColorTransform.empty();
-
 		Transform.getMatrix(component, matrix);
-		Transform.getColorTransform(component, colorTransform);
-
 		Matrix.concat(parentMatrix, matrix, matrix);
+
+		if (component.radius) {
+			const radius = matrixScale(matrix) * component.radius;
+			if (
+				matrix.x + radius < 0
+				|| matrix.y + radius < 0
+				|| matrix.x - radius > context.canvas.width - 0
+				|| matrix.y - radius > context.canvas.height - 0
+			) {
+				return;
+			}
+		}
+
+		const colorTransform = ColorTransform.empty();
+		Transform.getColorTransform(component, colorTransform);
 		ColorTransform.concat(parentColorTranform, colorTransform, colorTransform);
 
 		if (colorTransform.am <= 0) {
@@ -38,14 +65,17 @@ export namespace Component {
 
 		if (shape && pallete) {
 			renderShape(shape, pallete, colorTransform, context);
+			drawCalls++;
 		}
 
 		if (text) {
 			renderText(text, colorTransform, context);
+			drawCalls++;
 		}
 
 		if (image) {
 			renderImage(image, colorTransform, context);
+			drawCalls++;
 		}
 
 		if (children) {

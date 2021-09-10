@@ -1,3 +1,4 @@
+import { Point, pointLengthSquared } from '../../geom/point';
 import { Component } from '../../graphics/component';
 import { LINE, MOVE, STROKE } from '../../graphics/shape';
 import {
@@ -29,13 +30,16 @@ export interface BulletOptions {
 	width: number,
 	length: number,
 	type: number,
+	size: number,
 	connector: Connector;
 }
 
 export function bullet(options: BulletOptions): Bullet {
 	const {
-		speed, distance, width, length, color, damage, type, connector, id, acceleration,
+		speed, distance, width, length, color, damage, type, connector, id, acceleration, size,
 	} = options;
+
+	const sizeSquared = size * size;
 
 	return {
 		type,
@@ -47,6 +51,7 @@ export function bullet(options: BulletOptions): Bullet {
 		rotation: 0,
 		distance: 0,
 		pallete: [color],
+		radius: length + width,
 		shape: [MOVE, 0, 0, LINE, length, 0, STROKE, 0, width],
 		onUpdate(time) {
 			if (this.type === ROCKET) {
@@ -70,9 +75,15 @@ export function bullet(options: BulletOptions): Bullet {
 			this.x! += delta * mathCos(this.rotation!);
 			this.y! += delta * mathSin(this.rotation!);
 
+			// check distance
 			this.distance += delta;
-
 			if (this.distance > distance) {
+				connector.getBullets!().destroy!(this);
+			}
+
+			// check border
+			const centerDistance = pointLengthSquared(this as Point);
+			if (centerDistance > sizeSquared) {
 				connector.getBullets!().destroy!(this);
 			}
 		},
