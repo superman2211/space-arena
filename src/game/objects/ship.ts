@@ -21,8 +21,6 @@ const HEALTH_EFFECT = 0.3;
 
 const tempPoint = createPoint();
 
-export type ShipRotationTarget = -1 | 0 | 1;
-
 export const SHIPS = [
 	SHIP01,
 	SHIP02,
@@ -56,7 +54,7 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 		rocketSpeed: 200,
 		rocketAcceleration: 1000,
 		rocketDamage: 20,
-		rocketReload: 5,
+		rocketReload: 10,
 		guns: [
 			{ x: 100, y: -40 },
 			{ x: 100, y: 40 },
@@ -72,7 +70,7 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 		rocketSpeed: 300,
 		rocketAcceleration: 1000,
 		rocketDamage: 15,
-		rocketReload: 5,
+		rocketReload: 10,
 		guns: [
 			{ x: 0, y: -45 },
 			{ x: 0, y: 45 },
@@ -88,7 +86,7 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 		rocketSpeed: 250,
 		rocketAcceleration: 1000,
 		rocketDamage: 20,
-		rocketReload: 5,
+		rocketReload: 10,
 		guns: [
 			{ x: 90, y: -35 },
 			{ x: 90, y: 35 },
@@ -120,7 +118,7 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 		rocketSpeed: 200,
 		rocketAcceleration: 1000,
 		rocketDamage: 20,
-		rocketReload: 5,
+		rocketReload: 10,
 		guns: [
 			{ x: 50, y: -60 },
 			{ x: 50, y: 60 },
@@ -134,7 +132,7 @@ export interface Ship extends Component {
 	health: number,
 	healthEffect: number,
 	rotationSpeed: number,
-	rotationTarget: ShipRotationTarget,
+	rotationTarget: number,
 	mainFire: boolean,
 	mainFireTime: number,
 	rocketTime: number,

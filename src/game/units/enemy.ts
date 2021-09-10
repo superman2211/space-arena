@@ -1,3 +1,4 @@
+import { Point, pointLengthSquared } from '../../geom/point';
 import {
 	deltaAngle,
 	mathAtan2, mathRandom, randomFloat,
@@ -17,6 +18,11 @@ interface Enemy extends Ship {
 export function enemy(options: ShipOptions): Enemy {
 	const base = ship(options);
 
+	const sizeSquared = options.size * 0.8 * options.size * 0.8;
+
+	let safeTime = 0;
+	let ignoreSafeTime = 0;
+
 	return {
 		...base,
 		targetTime: 0,
@@ -25,6 +31,22 @@ export function enemy(options: ShipOptions): Enemy {
 		findTargetTime: 0,
 		onUpdate(time: number) {
 			base.onUpdate!.call(this, time);
+
+			// check border - safe
+			if (ignoreSafeTime > 0) {
+				ignoreSafeTime -= time;
+			} else {
+				const centerDistance = pointLengthSquared(this as Point);
+				if (centerDistance > sizeSquared) {
+					this.target = undefined;
+					this.rotationTarget = 1;
+					safeTime += time;
+					if (safeTime > 1) {
+						ignoreSafeTime = 2;
+					}
+					return;
+				}
+			}
 
 			// rotation
 			if (!this.target) {

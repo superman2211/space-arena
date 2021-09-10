@@ -74,10 +74,12 @@ export function ui(uiOptions: UIOptions): Component {
 		text: { ...style, align: 0.5 },
 	};
 
+	let finished = false;
+
 	function finish(message: string) {
 		result.text!.value = message;
 		instruction.text!.value = 'press ENTER to start again';
-		connector.getGame!().enabled = false;
+		finished = true;
 	}
 
 	return {
@@ -110,18 +112,18 @@ export function ui(uiOptions: UIOptions): Component {
 			instruction.x = (options.getWidth() / 2) / this.scale!;
 			instruction.y = (options.getHeight() - 30 - border) / this.scale!;
 
-			if (opponentsValue === 0) {
-				finish('WIN!');
-			} else if (healthValue <= 0) {
+			if (healthValue <= 0) {
 				finish('WASTED!');
+			} else if (opponentsValue === 0) {
+				finish('WIN!');
 			} else {
 				result.text!.value = '';
 				instruction.text!.value = 'LEFT & RIGHT - move    SPACE - fire    UP - rocket';
 			}
 		},
 		onKeyDown(e) {
-			if (e.code === 'Enter' && !connector.getGame!().enabled) {
-				connector.getGame!().enabled = true;
+			if (e.code === 'Enter' && finished) {
+				finished = false;
 				connector.getShips!().start();
 				connector.getBullets!().children = [];
 			}

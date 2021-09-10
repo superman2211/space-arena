@@ -17,7 +17,7 @@ export function asteroids(options: AsteroidsOptions): Layer {
 
 	let { count } = options;
 	const {
-		scale, parallax, brightness, size, pallete,
+		scale, parallax, brightness, size, pallete, 
 	} = options;
 
 	const size2 = size * 1.5 / parallax;
