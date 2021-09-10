@@ -2,6 +2,9 @@ import { Component } from '../../graphics/component';
 import { randomFloat } from '../../utils/math';
 import { Layer } from './layer';
 import { asteroid } from '../objects/asteroid';
+import { Connector } from '../connector';
+import { Ship } from '../objects/ship';
+import { distanceSquared, Point } from '../../geom/point';
 
 interface AsteroidsOptions {
 	size: number;
@@ -10,6 +13,7 @@ interface AsteroidsOptions {
 	scale: number;
 	brightness: number;
 	pallete: number[],
+	connector?: Connector,
 }
 
 export function asteroids(options: AsteroidsOptions): Layer {
@@ -17,7 +21,7 @@ export function asteroids(options: AsteroidsOptions): Layer {
 
 	let { count } = options;
 	const {
-		scale, parallax, brightness, size, pallete, 
+		scale, parallax, brightness, size, pallete, connector,
 	} = options;
 
 	const size2 = size * 1.5 / parallax;
@@ -34,5 +38,21 @@ export function asteroids(options: AsteroidsOptions): Layer {
 		parallax,
 		scale,
 		brightness,
+		onUpdate() {
+			if (this.parallax === 1 && connector) {
+				const shipsList: Ship[] = connector.getShips!().children! as Ship[];
+				const asteroidsList: Component[] = this.children!;
+
+				asteroidsList.forEach((b) => {
+					shipsList.forEach((ship) => {
+						const distance = distanceSquared(b as Point, ship as Point);
+						const raduises = ship.damageRadius + b.radius! / 3;
+						if (distance < raduises * raduises) {
+							ship.changeHealth(-1000);
+						}
+					});
+				});
+			}
+		},
 	};
 }

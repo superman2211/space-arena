@@ -49,12 +49,13 @@ export function game(connector: Connector): Game {
 				pallete: [0xff555555, 0xff666666],
 			}),
 			asteroids({
-				count: 20,
+				count: 30,
 				parallax: 1,
 				scale: 1,
-				size: SIZE,
+				size: SIZE / 1.5,
 				brightness: 0,
 				pallete: [0xff550000, 0xff770000],
+				connector,
 			}),
 			bullets({
 				connector,
