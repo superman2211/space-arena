@@ -6,7 +6,7 @@ function template() {
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Rollup Bundle</title>
+    <title>Space Arena</title>
 
   </head>
   <body style="margin: 0">
