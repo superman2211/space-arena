@@ -14,7 +14,7 @@ export function ui(uiOptions: UIOptions): Component {
 	const { connector, options } = uiOptions;
 	function getPlayer(): Ship | undefined {
 		const player = connector.getShips!().children![0] as Ship;
-		if (player.id === 0) {
+		if (player && player.id === 0) {
 			return player;
 		}
 		return undefined;
@@ -79,6 +79,7 @@ export function ui(uiOptions: UIOptions): Component {
 	function finish(message: string) {
 		result.text!.value = message;
 		instruction.text!.value = 'press ENTER to start again';
+		connector.getGame!().enabled = false;
 		finished = true;
 	}
 
@@ -124,6 +125,7 @@ export function ui(uiOptions: UIOptions): Component {
 		onKeyDown(e) {
 			if (e.code === 'Enter' && finished) {
 				finished = false;
+				connector.getGame!().enabled = true;
 				connector.getShips!().start();
 				connector.getBullets!().children = [];
 			}
