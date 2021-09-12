@@ -7,28 +7,24 @@ export interface ParticleOptions {
 	x: number;
 	y: number;
 	speed: number;
-	acceleration: number;
 	rotation: number;
-	rotationSpeed: number;
 	shape: Shape;
 	pallete: number[];
 	time: number;
 	alpha: number;
+	radius: number;
 	connector: Connector;
 }
 
 export function particle(options: ParticleOptions): Component {
 	const {
-		x, y, speed, acceleration, rotation, rotationSpeed, shape, pallete,
+		x, y, speed, rotation, shape, pallete, radius,
 	} = options;
 
 	let lifeTime = 0;
 
-	let speedX = speed * mathCos(rotation);
-	let speedY = speed * mathSin(rotation);
-
-	const accelerationX = acceleration * mathCos(rotation);
-	const accelerationY = acceleration * mathSin(rotation);
+	const speedX = speed * mathCos(rotation);
+	const speedY = speed * mathSin(rotation);
 
 	return {
 		x,
@@ -37,14 +33,10 @@ export function particle(options: ParticleOptions): Component {
 		shape,
 		pallete,
 		alpha: 1,
+		radius,
 		onUpdate(time) {
-			speedX += accelerationX;
-			speedY += accelerationY;
-
 			this.x! += speedX;
 			this.y! += speedY;
-
-			this.rotation! += rotationSpeed;
 
 			lifeTime += time;
 			if (lifeTime > options.time) {

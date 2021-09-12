@@ -1,5 +1,4 @@
 import { Point } from '../../geom/point';
-import { playLaser } from '../../media/sound-effect';
 import { Ship, ship, ShipOptions } from '../objects/ship';
 
 interface PlayerOptions extends ShipOptions {

@@ -10,6 +10,7 @@ import {
 } from '../../utils/math';
 import { Connector } from '../connector';
 import { exhaust } from '../effects/exhaust';
+import { explosion } from '../effects/explosion';
 import { BULLET, ROCKET } from './bullet';
 
 export const SHIP01 = 'ship01';
@@ -324,6 +325,7 @@ export function ship(options: ShipOptions): Ship {
 					connector.getShips!().destroy(this);
 					const volume = connector.getGame!().calculateVolume(this as Point);
 					playExplosion(volume);
+					explosion(this, pallete, connector);
 				}
 			}
 		},
