@@ -1,5 +1,7 @@
 import {
 	Component,
+	// getDrawCalls,
+	// resetDrawCalls,
 } from './component';
 import { ColorTransform } from '../geom/color';
 import { Matrix } from '../geom/matrix';

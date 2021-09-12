@@ -38,6 +38,11 @@ export namespace Matrix {
 	}
 
 	export function getScale(matrix: Matrix): number {
-		return mathAbs(mathMax(matrix.a, matrix.b, matrix.c, matrix.d));
+		return mathMax(
+			mathAbs(matrix.a),
+			mathAbs(matrix.b),
+			mathAbs(matrix.c),
+			mathAbs(matrix.d),
+		);
 	}
 }
