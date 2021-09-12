@@ -55,4 +55,6 @@ export function explosion(component: Transform, pallete: number[], connector: Co
 			radius,
 		});
 	}
+
+	connector.getGame!().shakingTime = 0.5;
 }

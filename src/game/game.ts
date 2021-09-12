@@ -8,7 +8,9 @@ import { planets } from './layers/planets';
 import { bullets } from './layers/bullets';
 import { Connector } from './connector';
 import { border } from './layers/border';
-import { mathMax, mathMin, mathSqrt } from '../utils/math';
+import {
+	mathMax, mathMin, mathSqrt, randomFloat,
+} from '../utils/math';
 import { particles } from './layers/particles';
 
 const SIZE = 2500;
@@ -16,6 +18,7 @@ const SIZE = 2500;
 export interface Game extends Component {
 	camera: Point;
 	size: number;
+	shakingTime: number;
 	calculateVolume(point: Point): number;
 }
 
@@ -24,6 +27,7 @@ export function game(connector: Connector): Game {
 
 	const component: Game = {
 		camera,
+		shakingTime: 0,
 		children: [
 			space({
 				stars: 10000,
@@ -97,12 +101,22 @@ export function game(connector: Connector): Game {
 			}),
 		],
 		size: SIZE,
-		onUpdate() {
+		onUpdate(time) {
 			const { x, y } = this.camera;
 			const layers = this.children! as Layer[];
+
+			let shakingX = 0;
+			let shakingY = 0;
+
+			if (this.shakingTime > 0) {
+				this.shakingTime -= time;
+				shakingX = randomFloat(3, 10);
+				shakingY = randomFloat(3, 10);
+			}
+
 			layers.forEach((layer) => {
-				layer.x = -x * layer.parallax;
-				layer.y = -y * layer.parallax;
+				layer.x = -x * layer.parallax + shakingX;
+				layer.y = -y * layer.parallax + shakingY;
 			});
 		},
 		calculateVolume(point: Point): number {
