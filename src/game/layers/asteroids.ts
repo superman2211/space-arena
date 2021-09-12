@@ -1,5 +1,7 @@
 import { Component } from '../../graphics/component';
-import { randomFloat } from '../../utils/math';
+import {
+	math2PI, mathCos, mathSin, randomFloat,
+} from '../../utils/math';
 import { Layer } from './layer';
 import { asteroid } from '../objects/asteroid';
 import { Connector } from '../connector';
@@ -25,11 +27,14 @@ export function asteroids(options: AsteroidsOptions): Layer {
 	} = options;
 
 	const size2 = size * 1.5 / parallax;
+	const centerSize = parallax === 1 ? size2 * 0.2 : 0;
 
 	while (count--) {
 		const child = asteroid({ pallete, rotationSpeed: 0 });
-		child.x = randomFloat(-size2, size2);
-		child.y = randomFloat(-size2, size2);
+		const angle = randomFloat(0, math2PI);
+		const length = randomFloat(centerSize, size2);
+		child.x = mathCos(angle) * length;
+		child.y = mathSin(angle) * length;
 		children.push(child);
 	}
 

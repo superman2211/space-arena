@@ -1,4 +1,4 @@
-import { createPoint, Point } from '../geom/point';
+import { createPoint, distanceSquared, Point } from '../geom/point';
 import { Component } from '../graphics/component';
 import { Layer } from './layers/layer';
 import { asteroids } from './layers/asteroids';
@@ -8,12 +8,14 @@ import { planets } from './layers/planets';
 import { bullets } from './layers/bullets';
 import { Connector } from './connector';
 import { border } from './layers/border';
+import { mathMax, mathMin, mathSqrt } from '../utils/math';
 
 const SIZE = 2500;
 
 export interface Game extends Component {
 	camera: Point;
 	size: number;
+	calculateVolume(point: Point): number;
 }
 
 export function game(connector: Connector): Game {
@@ -97,6 +99,11 @@ export function game(connector: Connector): Game {
 				layer.x = -x * layer.parallax;
 				layer.y = -y * layer.parallax;
 			});
+		},
+		calculateVolume(point: Point): number {
+			const maxDistance = SIZE / 2;
+			const distance = mathSqrt(distanceSquared(camera, point));
+			return mathMin(1, mathMax(0, distance / maxDistance));
 		},
 	};
 

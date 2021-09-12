@@ -3,7 +3,7 @@ import {
 } from '../../geom/point';
 import { Component } from '../../graphics/component';
 import { Transform } from '../../graphics/transform';
-import { playExplosion } from '../../media/sound-effect';
+import { playExplosion, playLaser } from '../../media/sound-effect';
 import { getShape } from '../../resources/shapes';
 import {
 	mathCos, mathPI2, mathSin,
@@ -308,7 +308,8 @@ export function ship(options: ShipOptions): Ship {
 				this.healthEffect = -HEALTH_EFFECT;
 				if (this.health <= 0) {
 					connector.getShips!().destroy(this);
-					playExplosion(1);
+					const volume = connector.getGame!().calculateVolume(this as Point);
+					playExplosion(volume);
 				}
 			}
 		},

@@ -33,6 +33,7 @@ export function player(options: PlayerOptions): Ship {
 
 				case 'ArrowUp':
 					this.shootRocket();
+					playLaser(1);
 					break;
 
 				default:
