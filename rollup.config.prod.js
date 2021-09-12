@@ -55,6 +55,20 @@ const properties = [
 	'speed',
 	'distance',
 	'size',
+	'lengthSquared',
+	'formatColor',
+	'transformColor',
+	'getBullets',
+	'getGame',
+	'calculateVolume',
+	'getParticles',
+	'destroy',
+	'getScale',
+	'onScreen',
+	'shakingTime',
+	'targetTime',
+	'reactionTime',
+	'mainFire',
 ];
 
 const regex = new RegExp(`${properties.join('|')}`);
