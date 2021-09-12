@@ -2,7 +2,9 @@
 
 This game created for [js13kgames](https://js13kgames.com/) competition
 
-[Link to game](https://js13kgames.com/entries/space-arena)
+[PLAY!](https://js13kgames.com/entries/space-arena)
+
+[Play on GitHub](https://antonovsergey2211.github.io/space-arena/dist/build/index.html)
 
 ## Instructions
 Use keys:
