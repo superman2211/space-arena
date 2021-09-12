@@ -33,8 +33,6 @@ export function ships(options: ShipsOptions): Ships {
 		size, camera, connector, parallax,
 	} = options;
 
-	const pallete = [0xff26333E, 0xff666666, 0xffB3B3AF, 0xffF9AC35, 0xffff0000];
-
 	const layer: Ships = {
 		parallax,
 		destroy(b: Ship): void {
@@ -69,7 +67,7 @@ export function ships(options: ShipsOptions): Ships {
 			const children: Component[] = [];
 
 			const playerShip = player({
-				name: randomName(), pallete, size, camera, connector, id: nextId++,
+				name: randomName(), size, camera, connector, id: nextId++,
 			});
 			playerShip.rotation = -mathPI2;
 			children.push(playerShip);
@@ -78,7 +76,7 @@ export function ships(options: ShipsOptions): Ships {
 
 			while (count--) {
 				const child = enemy({
-					pallete, name: randomName(), size, connector, id: nextId++,
+					name: randomName(), size, connector, id: nextId++,
 				});
 				child.x = randomFloat(-size, size);
 				child.y = randomFloat(-size, size);

@@ -42,6 +42,8 @@ export interface ShipSettings {
 	rocketReload: number,
 	rocketDamage: number,
 	guns: Point[],
+	gunColor: number;
+	pallete: number[],
 }
 
 const SETTINGS: { [key: string]: ShipSettings } = {
@@ -60,6 +62,8 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 			{ x: 100, y: -40 },
 			{ x: 100, y: 40 },
 		],
+		gunColor: 0xffff0000,
+		pallete: [0xff999999, 0xff666666, 0xff990000, 0xff990000, 0xffff0000],
 	},
 	[SHIP02]: {
 		speedMax: 350,
@@ -76,6 +80,8 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 			{ x: 0, y: -45 },
 			{ x: 0, y: 45 },
 		],
+		gunColor: 0xffffffff,
+		pallete: [0xff006600, 0xffeeeeee, 0xff004400, 0xff666666, 0xff666666, 0xffeeeeee],
 	},
 	[SHIP03]: {
 		speedMax: 300,
@@ -92,6 +98,8 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 			{ x: 90, y: -35 },
 			{ x: 90, y: 35 },
 		],
+		gunColor: 0xff66ff66,
+		pallete: [0xff666666, 0xff999999, 0xff222222, 0xff00ffff, 0xff00ffff, 0xff66ff66],
 	},
 	[SHIP04]: {
 		speedMax: 400,
@@ -108,6 +116,8 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 			{ x: 50, y: -70 },
 			{ x: 50, y: 70 },
 		],
+		gunColor: 0xff6666ff,
+		pallete: [0xff996633, 0xffbbbb99, 0xffffffff, 0xff999900, 0xff6666ff],
 	},
 	[SHIP05]: {
 		speedMax: 300,
@@ -124,6 +134,8 @@ const SETTINGS: { [key: string]: ShipSettings } = {
 			{ x: 50, y: -60 },
 			{ x: 50, y: 60 },
 		],
+		gunColor: 0xff00ffff,
+		pallete: [0xff444444, 0xffB3B3AF, 0xff666666, 0xff006666, 0xff00ffff],
 	},
 };
 
@@ -144,7 +156,6 @@ export interface Ship extends Component {
 }
 
 export interface ShipOptions {
-	pallete: number[],
 	name: string,
 	size: number,
 	connector: Connector;
@@ -153,13 +164,15 @@ export interface ShipOptions {
 
 export function ship(options: ShipOptions): Ship {
 	const {
-		pallete, name, connector, size, id,
+		name, connector, size, id,
 	} = options;
 
 	const sizeSquared = (size - 80) * (size - 80);
 
 	const shape = getShape(name);
 	const settings = SETTINGS[name];
+
+	const { pallete } = settings;
 
 	let exhaustTime = 0;
 
@@ -227,7 +240,7 @@ export function ship(options: ShipOptions): Ship {
 					speed: settings.bulletSpeed,
 					acceleration: 0,
 					distance: 1000,
-					color: 0xffff6666,
+					color: settings.gunColor,
 					width: 5,
 					length: settings.bulletLength,
 					type: BULLET,
