@@ -20,6 +20,7 @@ export interface Game extends Component {
 	size: number;
 	shakingTime: number;
 	calculateVolume(point: Point): number;
+	updateCamera(time: number): void;
 }
 
 export function game(connector: Connector): Game {
@@ -101,7 +102,7 @@ export function game(connector: Connector): Game {
 			}),
 		],
 		size: SIZE,
-		onUpdate(time) {
+		updateCamera(time) {
 			const { x, y } = this.camera;
 			const layers = this.children! as Layer[];
 

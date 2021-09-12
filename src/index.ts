@@ -1,9 +1,9 @@
-import { application } from './game/application';
+import { Application, application } from './game/application';
 import { Component } from './graphics/component';
 import { Graphics } from './graphics/graphics';
 import { loadShapes } from './resources/shapes';
 
-let app: Component;
+let app: Application;
 
 let oldTime = performance.now();
 
@@ -16,7 +16,9 @@ function calculateTime(): number {
 
 function update() {
 	requestAnimationFrame(update);
-	Component.update(app, calculateTime());
+	const time = calculateTime();
+	Component.update(app, time);
+	app.updateView(time);
 	Graphics.render(app);
 }
 

@@ -6,18 +6,22 @@ import { mathMin } from '../utils/math';
 
 const SIZE: number = 1024;
 
+export interface Application extends Component {
+	updateView(time: number): void;
+}
+
 export interface ApplicationOptions {
 	getWidth(): number,
 	getHeight(): number,
 }
 
-export function application(options: ApplicationOptions): Component {
+export function application(options: ApplicationOptions): Application {
 	const connector: Connector = {};
 	const game = createGame(connector);
 	const ui = createUI({ connector, options });
 	return {
 		children: [game, ui],
-		onUpdate() {
+		updateView(time: number) {
 			const w = options.getWidth();
 			const h = options.getHeight();
 
@@ -28,6 +32,8 @@ export function application(options: ApplicationOptions): Component {
 			game.scale = scale;
 			game.x = w / 2;
 			game.y = h / 2;
+
+			game.updateCamera(time);
 		},
 	};
 }
