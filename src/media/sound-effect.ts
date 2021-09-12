@@ -8,17 +8,16 @@ export function playLaser(volume: number) {
 	}
 
 	const array = [0, 0, 0.2996286612451152, 0.049831483062296344, 0.15737676185023775, 0.5703562729712254, 0.037420144186540515, -0.3879256862405088, 0, 0, 0, 0, 0, 0.18821061188407817, 0.09033692527451312, 0, 0, 0, 1, 0, 0, 0.024003649437587614, 0, 0.5];
-	// console.log(array);
-
 	const laserSound = new Audio();
 	laserSound.volume = volume;
 	laserSound.src = jsfxr(array);
-	// console.log(audio.src);
 	laserSound.addEventListener('ended', () => {
 		laserPlayed = false;
 	});
 	laserPlayed = true;
-	laserSound.play().catch(() => console.log);
+	laserSound.play().catch(() => {
+		// console.log(e);
+	});
 }
 
 export function playExplosion(volume: number) {
@@ -28,5 +27,7 @@ export function playExplosion(volume: number) {
 	audio.volume = volume;
 	audio.src = jsfxr(array);
 	// console.log(audio.src);
-	audio.play().catch(() => { });
+	audio.play().catch(() => {
+		// console.log(e);
+	});
 }

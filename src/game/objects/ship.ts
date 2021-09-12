@@ -3,7 +3,7 @@ import {
 } from '../../geom/point';
 import { Component } from '../../graphics/component';
 import { Transform } from '../../graphics/transform';
-import { playExplosion, playLaser } from '../../media/sound-effect';
+import { playExplosion } from '../../media/sound-effect';
 import { getShape } from '../../resources/shapes';
 import {
 	mathCos, mathPI2, mathSin,
