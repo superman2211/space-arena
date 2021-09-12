@@ -1,11 +1,11 @@
-import { createPoint } from '../../geom/point';
+import { Point } from '../../geom/point';
 import { Shape } from '../../graphics/shape';
 import { Transform } from '../../graphics/transform';
 import { generateShape } from '../../utils/generate-shape';
 import { mathChance } from '../../utils/math';
 import { Connector } from '../connector';
 
-const tempPoint = createPoint();
+const tempPoint = Point.create();
 
 export function exhaust(component: Transform, rotation: number, offset: number, connector: Connector) {
 	const shape: Shape = [];

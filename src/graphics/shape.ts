@@ -13,12 +13,12 @@ export function renderShape(shape: Shape, pallete: number[], ct: ColorTransform,
 	for (let i = 0; i < shape.length; i++) {
 		switch (shape[i]) {
 			case FILL:
-				context.fillStyle = Pattern.color(pallete[shape[++i]], ct);
+				context.fillStyle = Pattern.transformColor(pallete[shape[++i]], ct);
 				context.fill();
 				break;
 
 			case STROKE:
-				context.strokeStyle = Pattern.color(pallete[shape[++i]], ct);
+				context.strokeStyle = Pattern.transformColor(pallete[shape[++i]], ct);
 				context.lineWidth = shape[++i];
 				context.stroke();
 				break;

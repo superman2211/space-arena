@@ -31,7 +31,7 @@ function createStars(count: number, size: number, bigStartsChance: number): HTML
 			radius *= 2;
 		}
 
-		context.fillStyle = Pattern.easyColor(randomInt(0xff999999, 0xffffffff));
+		context.fillStyle = Pattern.formatColor(randomInt(0xff999999, 0xffffffff));
 		context.beginPath();
 		context.arc(x, y, radius, 0, mathPI2);
 		context.fill();

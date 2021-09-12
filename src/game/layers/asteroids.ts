@@ -6,7 +6,7 @@ import { Layer } from './layer';
 import { asteroid } from '../objects/asteroid';
 import { Connector } from '../connector';
 import { Ship } from '../objects/ship';
-import { distanceSquared, Point } from '../../geom/point';
+import { Point } from '../../geom/point';
 
 interface AsteroidsOptions {
 	size: number;
@@ -50,7 +50,7 @@ export function asteroids(options: AsteroidsOptions): Layer {
 
 				asteroidsList.forEach((b) => {
 					shipsList.forEach((ship) => {
-						const distance = distanceSquared(b as Point, ship as Point);
+						const distance = Point.distanceSquared(b as Point, ship as Point);
 						const raduises = ship.damageRadius + b.radius! / 3;
 						if (distance < raduises * raduises) {
 							ship.changeHealth(-1000);

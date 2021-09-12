@@ -1,7 +1,7 @@
 import { ColorTransform } from '../geom/color';
 
 export namespace Pattern {
-	export function color(c: number, ct: ColorTransform): string {
+	export function transformColor(c: number, ct: ColorTransform): string {
 		let a = c >> 24 & 0xff;
 		let r = c >> 16 & 0xff;
 		let g = c >> 8 & 0xff;
@@ -15,7 +15,7 @@ export namespace Pattern {
 		return `rgba(${r}, ${g}, ${b}, ${a / 0xff})`;
 	}
 
-	export function easyColor(c: number): string {
+	export function formatColor(c: number): string {
 		const a = c >> 24 & 0xff;
 		const r = c >> 16 & 0xff;
 		const g = c >> 8 & 0xff;

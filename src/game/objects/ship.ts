@@ -1,6 +1,4 @@
-import {
-	createPoint, Point, pointLengthSquared,
-} from '../../geom/point';
+import { Point } from '../../geom/point';
 import { Component } from '../../graphics/component';
 import { Transform } from '../../graphics/transform';
 import { playExplosion, playLaser } from '../../media/sound-effect';
@@ -22,7 +20,7 @@ export const SHIP05 = 'ship05';
 const MAX_HEALTH = 100;
 const HEALTH_EFFECT = 0.3;
 
-const tempPoint = createPoint();
+const tempPoint = Point.create();
 
 export const SHIPS = [
 	SHIP01,
@@ -272,16 +270,18 @@ export function ship(options: ShipOptions): Ship {
 			}
 
 			// check border
-			const centerDistance = pointLengthSquared(this as Point);
+			const centerDistance = Point.lengthSquared(this as Point);
 			if (centerDistance > sizeSquared) {
 				this.changeHealth(-1000);
 			}
 
 			// exhaust
-			exhaustTime -= time;
-			if (exhaustTime <= 0) {
-				exhaustTime = 0.05;
-				exhaust(this as Point, this.rotation! + mathPI, 80, connector);
+			if (this.onScreen) {
+				exhaustTime -= time;
+				if (exhaustTime <= 0) {
+					exhaustTime = 0.05;
+					exhaust(this as Point, this.rotation! + mathPI, 80, connector);
+				}
 			}
 		},
 		shootRocket() {
@@ -325,7 +325,9 @@ export function ship(options: ShipOptions): Ship {
 					connector.getShips!().destroy(this);
 					const volume = connector.getGame!().calculateVolume(this as Point);
 					playExplosion(volume);
-					explosion(this, pallete, connector);
+					if (this.onScreen) {
+						explosion(this, pallete, connector);
+					}
 				}
 			}
 		},

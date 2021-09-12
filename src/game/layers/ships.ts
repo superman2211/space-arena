@@ -1,4 +1,4 @@
-import { distanceSquared, Point } from '../../geom/point';
+import { Point } from '../../geom/point';
 import { Component } from '../../graphics/component';
 import {
 	randomInt, randomFloat, math2PI, mathPI2, mathAtan2, mathAbs, deltaAngle,
@@ -53,7 +53,7 @@ export function ships(options: ShipsOptions): Ships {
 					const rotation = mathAtan2(s.y! - t.y!, s.x! - t.x!);
 					const deltaRotation = mathAbs(deltaAngle(rotation, t.rotation!));
 					if (deltaRotation < 1) {
-						const distance = distanceSquared(s as Point, t as Point);
+						const distance = Point.distanceSquared(s as Point, t as Point);
 						if (targetDistanceMin < distance && distance < targetDistanceMax) {
 							target = s;
 							targetDistanceMax = distance;

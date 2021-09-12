@@ -1,5 +1,5 @@
 import { ColorTransform } from '../geom/color';
-import { Matrix, matrixScale } from '../geom/matrix';
+import { Matrix } from '../geom/matrix';
 import { renderImage, Image } from './image';
 import { renderShape, Shape } from './shape';
 import { renderText, Text } from './text';
@@ -14,6 +14,7 @@ export interface Component extends Transform, Update, Keyboard {
 	image?: Image;
 	visible?: boolean;
 	radius?: number;
+	onScreen?: boolean;
 }
 
 let drawCalls = 0;
@@ -28,6 +29,8 @@ export function getDrawCalls() {
 
 export namespace Component {
 	export function render(component: Component, parentMatrix: Matrix, parentColorTranform: ColorTransform, context: CanvasRenderingContext2D) {
+		component.onScreen = false;
+
 		const visible = component.visible ?? true;
 		if (!visible) {
 			return;
@@ -38,7 +41,7 @@ export namespace Component {
 		Matrix.concat(parentMatrix, matrix, matrix);
 
 		if (component.radius) {
-			const radius = matrixScale(matrix) * component.radius;
+			const radius = Matrix.getScale(matrix) * component.radius;
 			if (
 				matrix.x + radius < 0
 				|| matrix.y + radius < 0
@@ -56,6 +59,8 @@ export namespace Component {
 		if (colorTransform.am <= 0) {
 			return;
 		}
+
+		component.onScreen = true;
 
 		context.setTransform(matrix.a, matrix.b, matrix.c, matrix.d, matrix.x, matrix.y);
 

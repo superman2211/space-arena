@@ -1,4 +1,4 @@
-import { Point, pointLengthSquared } from '../../geom/point';
+import { Point } from '../../geom/point';
 import { Component } from '../../graphics/component';
 import { LINE, MOVE, STROKE } from '../../graphics/shape';
 import {
@@ -74,10 +74,12 @@ export function bullet(options: BulletOptions): Bullet {
 				this.speed += time * acceleration;
 
 				// exhaust
-				exhaustTime -= time;
-				if (exhaustTime <= 0) {
-					exhaustTime = 0.01;
-					exhaust(this as Point, this.rotation! + mathPI, 0, connector);
+				if (this.onScreen) {
+					exhaustTime -= time;
+					if (exhaustTime <= 0) {
+						exhaustTime = 0.01;
+						exhaust(this as Point, this.rotation! + mathPI, 0, connector);
+					}
 				}
 			}
 
@@ -92,7 +94,7 @@ export function bullet(options: BulletOptions): Bullet {
 			}
 
 			// check border
-			const centerDistance = pointLengthSquared(this as Point);
+			const centerDistance = Point.lengthSquared(this as Point);
 			if (centerDistance > sizeSquared) {
 				connector.getBullets!().destroy!(this);
 			}

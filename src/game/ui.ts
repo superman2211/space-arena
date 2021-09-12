@@ -79,7 +79,6 @@ export function ui(uiOptions: UIOptions): Component {
 	function finish(message: string) {
 		result.text!.value = message;
 		instruction.text!.value = 'press ENTER to start again';
-		// connector.getGame!().enabled = false;
 		finished = true;
 	}
 
@@ -114,9 +113,10 @@ export function ui(uiOptions: UIOptions): Component {
 			instruction.y = (options.getHeight() - 30 - border) / this.scale!;
 
 			if (healthValue <= 0) {
-				finish('WASTED!');
+				finish('GAME OVER!');
 			} else if (opponentsValue === 0) {
 				finish('WIN!');
+				connector.getGame!().enabled = false;
 			} else {
 				result.text!.value = '';
 				instruction.text!.value = 'LEFT & RIGHT - move    SPACE - fire    UP - rocket';
@@ -125,7 +125,7 @@ export function ui(uiOptions: UIOptions): Component {
 		onKeyDown(e) {
 			if (e.code === 'Enter' && finished) {
 				finished = false;
-				// connector.getGame!().enabled = true;
+				connector.getGame!().enabled = true;
 				connector.getShips!().start();
 				connector.getBullets!().children = [];
 			}

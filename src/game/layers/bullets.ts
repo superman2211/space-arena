@@ -1,4 +1,4 @@
-import { distanceSquared, Point } from '../../geom/point';
+import { Point } from '../../geom/point';
 import { bullet, Bullet, BulletOptions } from '../objects/bullet';
 import { Ship } from '../objects/ship';
 import { Connector } from '../connector';
@@ -37,7 +37,7 @@ export function bullets(options: BulletsOptions): Bullets {
 			bulletsList.forEach((b) => {
 				shipsList.forEach((ship) => {
 					if (b.id !== ship.id) {
-						const distance = distanceSquared(b as Point, ship as Point);
+						const distance = Point.distanceSquared(b as Point, ship as Point);
 						const raduises = ship.damageRadius * ship.damageRadius;
 						if (distance < raduises) {
 							this.destroy(b);

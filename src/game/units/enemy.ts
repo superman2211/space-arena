@@ -1,4 +1,4 @@
-import { Point, pointLengthSquared } from '../../geom/point';
+import { Point } from '../../geom/point';
 import {
 	deltaAngle,
 	mathAtan2, mathChance, randomFloat,
@@ -36,7 +36,7 @@ export function enemy(options: ShipOptions): Enemy {
 			if (ignoreSafeTime > 0) {
 				ignoreSafeTime -= time;
 			} else {
-				const centerDistance = pointLengthSquared(this as Point);
+				const centerDistance = Point.lengthSquared(this as Point);
 				if (centerDistance > sizeSquared) {
 					this.target = undefined;
 					this.rotationTarget = 1;
