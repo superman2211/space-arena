@@ -28,7 +28,6 @@ export function player(options: PlayerOptions): Ship {
 
 				case 'Space':
 					this.mainFire = true;
-					playLaser(1);
 					break;
 
 				case 'ArrowUp':

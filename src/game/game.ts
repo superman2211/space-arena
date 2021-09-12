@@ -103,7 +103,7 @@ export function game(connector: Connector): Game {
 		calculateVolume(point: Point): number {
 			const maxDistance = SIZE / 2;
 			const distance = mathSqrt(distanceSquared(camera, point));
-			return mathMin(1, mathMax(0, distance / maxDistance));
+			return 1 - mathMin(1, mathMax(0, distance / maxDistance));
 		},
 	};
 
