@@ -1,7 +1,7 @@
 import { Point, pointLengthSquared } from '../../geom/point';
 import {
 	deltaAngle,
-	mathAtan2, mathRandom, randomFloat,
+	mathAtan2, mathChance, randomFloat,
 } from '../../utils/math';
 import {
 	Ship, ship, ShipOptions,
@@ -53,7 +53,7 @@ export function enemy(options: ShipOptions): Enemy {
 				this.rotationTime -= time;
 				if (this.rotationTime <= 0) {
 					if (this.rotationTarget === 0) {
-						this.rotationTarget = mathRandom() < 0.5 ? -1 : 1;
+						this.rotationTarget = mathChance() ? -1 : 1;
 						this.rotationTime = randomFloat(0.5, 2);
 					} else {
 						this.rotationTarget = 0;

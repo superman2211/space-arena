@@ -1,33 +1,6 @@
 import { Component } from '../../graphics/component';
-import { FILL, PATH } from '../../graphics/shape';
-import {
-	randomInt, mathRandom, mathCos, mathSin,
-} from '../../utils/math';
-
-function generate(
-	array: number[],
-	color: number,
-	x: number, y: number,
-	countMin: number, countMax: number,
-	radiusMin: number, radiusMax: number,
-) {
-	let count = randomInt(countMin, countMax);
-
-	array.push(PATH, count);
-
-	const angleStep = Math.PI * 2 / count;
-	let angle = Math.PI * mathRandom();
-
-	while (count--) {
-		array.push(
-			x + mathSin(angle) * randomInt(radiusMin, radiusMax),
-			y + mathCos(angle) * randomInt(radiusMin, radiusMax),
-		);
-		angle += angleStep;
-	}
-
-	array.push(FILL, color);
-}
+import { generateShape } from '../../utils/generate-shape';
+import { randomInt } from '../../utils/math';
 
 interface AsteroidOptions {
 	pallete: number[],
@@ -40,7 +13,7 @@ export function asteroid(options: AsteroidOptions): Component {
 	let count = randomInt(3, 6);
 
 	while (count--) {
-		generate(
+		generateShape(
 			shape,
 			randomInt(0, pallete.length - 1), // color
 			randomInt(-50, 50), // x

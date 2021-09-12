@@ -9,6 +9,7 @@ import { bullets } from './layers/bullets';
 import { Connector } from './connector';
 import { border } from './layers/border';
 import { mathMax, mathMin, mathSqrt } from '../utils/math';
+import { particles } from './layers/particles';
 
 const SIZE = 2500;
 
@@ -60,6 +61,10 @@ export function game(connector: Connector): Game {
 				connector,
 			}),
 			bullets({
+				connector,
+				parallax: 1,
+			}),
+			particles({
 				connector,
 				parallax: 1,
 			}),

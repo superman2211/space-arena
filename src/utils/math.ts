@@ -11,6 +11,10 @@ export const mathPI = Math.PI;
 export const math2PI = Math.PI * 2;
 export const mathPI2 = Math.PI / 2;
 
+export function mathChance(): boolean {
+	return mathRandom() > 0.5;
+}
+
 export function randomInt(min: number, max: number): number {
 	return mathRound(min + mathRandom() * (max - min));
 }

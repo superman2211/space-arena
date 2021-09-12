@@ -2,11 +2,14 @@ import {
 	createPoint, Point, pointLengthSquared,
 } from '../../geom/point';
 import { Component } from '../../graphics/component';
+import { Shape } from '../../graphics/shape';
 import { Transform } from '../../graphics/transform';
 import { playExplosion, playLaser } from '../../media/sound-effect';
 import { getShape } from '../../resources/shapes';
+import { generateShape } from '../../utils/generate-shape';
 import {
-	mathCos, mathPI2, mathSin,
+	mathChance,
+	mathCos, mathPI, mathPI2, mathSin,
 } from '../../utils/math';
 import { Connector } from '../connector';
 import { BULLET, ROCKET } from './bullet';
@@ -21,6 +24,7 @@ const MAX_HEALTH = 100;
 const HEALTH_EFFECT = 0.3;
 
 const tempPoint = createPoint();
+const exhaustPoint = createPoint();
 
 export const SHIPS = [
 	SHIP01,
@@ -161,6 +165,8 @@ export function ship(options: ShipOptions): Ship {
 	const shape = getShape(name);
 	const settings = SETTINGS[name];
 
+	let exhaustTime = 0;
+
 	return {
 		id,
 		scale: 0.5,
@@ -271,6 +277,36 @@ export function ship(options: ShipOptions): Ship {
 			const centerDistance = pointLengthSquared(this as Point);
 			if (centerDistance > sizeSquared) {
 				this.changeHealth(-1000);
+			}
+
+			// exhaust
+			exhaustTime -= time;
+			if (exhaustTime <= 0) {
+				exhaustTime = 0.05;
+
+				const exhaustShape: Shape = [];
+
+				generateShape(exhaustShape, 0, 0, 0, 5, 10, 10, 20);
+
+				exhaustPoint.x = -80;
+
+				Transform.transformPoint(this, exhaustPoint, tempPoint);
+
+				const exhaustParticle = connector.getParticles!().create({
+					x: tempPoint.x,
+					y: tempPoint.y,
+					pallete: [mathChance() ? 0x99999999 : 0x99666666],
+					speed: 1,
+					acceleration: 0,
+					rotation: this.rotation! + mathPI,
+					rotationSpeed: 0.01,
+					shape: exhaustShape,
+					time: 0.3,
+					alpha: 5,
+					connector,
+				});
+
+				exhaustParticle.radius = 20;
 			}
 		},
 		shootRocket() {
