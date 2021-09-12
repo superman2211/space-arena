@@ -10,11 +10,13 @@
 		"clean": "rimraf ./dist",
 		"watch:ts": "tsc -w",
 		"watch:rollup": "rollup -c rollup.config.dev.js -w",
-		"build": "yarn clean && tsc && rollup -c rollup.config.prod.js && yarn generate-shapes",
+		"build": "yarn clean && tsc && rollup -c rollup.config.prod.js && yarn generate-shapes && yarn build-libs",
 		"serve": "http-server ./dist/build",
 		"lint": "eslint --fix",
 		"compress": "yarn google-closure-compiler --compilation_level=ADVANCED --js=dist/build/bundle.js --js_output_file=dist/build/bundle.min.js",
-		"generate-shapes": "node ./scripts/generate-shapes.js resources dist/build/shapes"
+		"generate-shapes": "node ./scripts/generate-shapes.js resources dist/build/shapes",
+		"build-jsfxr": "yarn google-closure-compiler --js=libs/jsfxr.js --js_output_file=dist/build/jsfxr.js",
+		"build-libs": "yarn build-jsfxr"
 	},
 	"dependencies": {
 		"svg-path": "^0.2.1",

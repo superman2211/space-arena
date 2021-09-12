@@ -11,6 +11,7 @@ function template() {
   </head>
   <body style="margin: 0">
     <canvas id="c" style="width: 100%; height: 100%;"></canvas>
+	<script src="jsfxr.js"></script>
     <script src="bundle.js"></script>
   </body>
 </html>

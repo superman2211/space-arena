@@ -1,4 +1,5 @@
 import { Point } from '../../geom/point';
+import { playLaser } from '../../media/sound-effect';
 import { Ship, ship, ShipOptions } from '../objects/ship';
 
 interface PlayerOptions extends ShipOptions {
@@ -27,6 +28,7 @@ export function player(options: PlayerOptions): Ship {
 
 				case 'Space':
 					this.mainFire = true;
+					playLaser(1);
 					break;
 
 				case 'ArrowUp':

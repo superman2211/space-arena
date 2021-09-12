@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import { application } from './game/application';
 import { Component } from './graphics/component';
 import { Graphics } from './graphics/graphics';
@@ -46,3 +47,25 @@ async function main() {
 }
 
 main();
+
+// declare function jsfxr(params: any): string;
+
+// document.addEventListener('keydown', () => {
+// 	// fetch('explosion')
+// 	// 	.then((response) => response.arrayBuffer())
+// 	// 	.then((buffer) => {
+// 	// 		console.log(buffer);
+
+// 	// 	});
+// 	// const playString = '1,0,0.2617941639470922,0.4,0.051897348843711735,0.5143744956632581,0.014957228051626005';
+// 	const playString = '0,0,0.2996286612451152,0.049831483062296344,0.15737676185023775,0.5703562729712254,0.037420144186540515,-0.3879256862405088,0,0,0,0,0,0.18821061188407817,0.09033692527451312,0,0,0,1,0,0,0.024003649437587614,0,0.5';
+// 	const array = playString.split(',').map((i) => parseFloat(i));
+// 	console.log(array);
+// 	const audio = new Audio();
+// 	audio.src = jsfxr(array);
+// 	console.log(audio.src);
+// 	audio.play();
+// 	// const s = new SoundEffect(playString).generate();
+// 	// // returns a webaudio object if supported, or an Audio object
+// 	// s.getAudio().play();
+// });
