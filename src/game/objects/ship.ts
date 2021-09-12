@@ -2,16 +2,14 @@ import {
 	createPoint, Point, pointLengthSquared,
 } from '../../geom/point';
 import { Component } from '../../graphics/component';
-import { Shape } from '../../graphics/shape';
 import { Transform } from '../../graphics/transform';
 import { playExplosion, playLaser } from '../../media/sound-effect';
 import { getShape } from '../../resources/shapes';
-import { generateShape } from '../../utils/generate-shape';
 import {
-	mathChance,
 	mathCos, mathPI, mathPI2, mathSin,
 } from '../../utils/math';
 import { Connector } from '../connector';
+import { exhaust } from '../effects/exhaust';
 import { BULLET, ROCKET } from './bullet';
 
 export const SHIP01 = 'ship01';
@@ -24,7 +22,6 @@ const MAX_HEALTH = 100;
 const HEALTH_EFFECT = 0.3;
 
 const tempPoint = createPoint();
-const exhaustPoint = createPoint();
 
 export const SHIPS = [
 	SHIP01,
@@ -160,7 +157,7 @@ export function ship(options: ShipOptions): Ship {
 		pallete, name, connector, size, id,
 	} = options;
 
-	const sizeSquared = size * size;
+	const sizeSquared = (size - 80) * (size - 80);
 
 	const shape = getShape(name);
 	const settings = SETTINGS[name];
@@ -283,30 +280,7 @@ export function ship(options: ShipOptions): Ship {
 			exhaustTime -= time;
 			if (exhaustTime <= 0) {
 				exhaustTime = 0.05;
-
-				const exhaustShape: Shape = [];
-
-				generateShape(exhaustShape, 0, 0, 0, 5, 10, 10, 20);
-
-				exhaustPoint.x = -80;
-
-				Transform.transformPoint(this, exhaustPoint, tempPoint);
-
-				const exhaustParticle = connector.getParticles!().create({
-					x: tempPoint.x,
-					y: tempPoint.y,
-					pallete: [mathChance() ? 0x99999999 : 0x99666666],
-					speed: 1,
-					acceleration: 0,
-					rotation: this.rotation! + mathPI,
-					rotationSpeed: 0.01,
-					shape: exhaustShape,
-					time: 0.3,
-					alpha: 5,
-					connector,
-				});
-
-				exhaustParticle.radius = 20;
+				exhaust(this as Point, this.rotation! + mathPI, 80, connector);
 			}
 		},
 		shootRocket() {
@@ -333,6 +307,8 @@ export function ship(options: ShipOptions): Ship {
 			rocket.x = this.x;
 			rocket.y = this.y;
 			rocket.rotation = this.rotation;
+
+			playLaser(connector.getGame!().calculateVolume(rocket as Point));
 		},
 		changeHealth(deltaHealth: number) {
 			this.health += deltaHealth;

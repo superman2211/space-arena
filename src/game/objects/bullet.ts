@@ -2,9 +2,10 @@ import { Point, pointLengthSquared } from '../../geom/point';
 import { Component } from '../../graphics/component';
 import { LINE, MOVE, STROKE } from '../../graphics/shape';
 import {
-	deltaAngle, mathAtan2, mathCos, mathSin,
+	deltaAngle, mathAtan2, mathCos, mathPI, mathSin,
 } from '../../utils/math';
 import { Connector } from '../connector';
+import { exhaust } from '../effects/exhaust';
 import { Ship } from './ship';
 
 export const BULLET = 0;
@@ -41,6 +42,8 @@ export function bullet(options: BulletOptions): Bullet {
 
 	const sizeSquared = size * size;
 
+	let exhaustTime = 0;
+
 	return {
 		type,
 		damage,
@@ -69,6 +72,13 @@ export function bullet(options: BulletOptions): Bullet {
 				}
 
 				this.speed += time * acceleration;
+
+				// exhaust
+				exhaustTime -= time;
+				if (exhaustTime <= 0) {
+					exhaustTime = 0.01;
+					exhaust(this as Point, this.rotation! + mathPI, 0, connector);
+				}
 			}
 
 			const delta = this.speed * time;

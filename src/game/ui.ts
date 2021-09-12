@@ -79,7 +79,7 @@ export function ui(uiOptions: UIOptions): Component {
 	function finish(message: string) {
 		result.text!.value = message;
 		instruction.text!.value = 'press ENTER to start again';
-		connector.getGame!().enabled = false;
+		// connector.getGame!().enabled = false;
 		finished = true;
 	}
 
@@ -125,7 +125,7 @@ export function ui(uiOptions: UIOptions): Component {
 		onKeyDown(e) {
 			if (e.code === 'Enter' && finished) {
 				finished = false;
-				connector.getGame!().enabled = true;
+				// connector.getGame!().enabled = true;
 				connector.getShips!().start();
 				connector.getBullets!().children = [];
 			}
