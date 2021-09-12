@@ -4,9 +4,23 @@ This game created for [js13kgames](https://js13kgames.com/) competition
 
 [Link to game](https://js13kgames.com/entries/space-arena)
 
-## Install
-[NodeJS](https://nodejs.org/en/)
-[Yarn](https://classic.yarnpkg.com/en/docs/install)
+## Instructions
+Use keys:
+
+LEFT & RIGHT - move
+
+SPACE - fire
+
+UP - rocket
+
+ENTER - play again
+
+## Development
+
+### Install
+Install [NodeJS](https://nodejs.org/en/)
+
+Install [Yarn](https://classic.yarnpkg.com/en/docs/install)
 
 Install dependencies
 ```
