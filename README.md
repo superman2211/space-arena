@@ -1,6 +1,6 @@
 # Space Arena
 
-This game created for [js13kgames](https://js13kgames.com/) competition
+This game created for [js13kgames 2021](https://js13kgames.com/) competition
 
 [PLAY!](https://js13kgames.com/entries/space-arena)
 
